@@ -1,0 +1,7 @@
+2023-08-22	Timer set for 10,000 steps by end of day 2023-08-23. (Completed 2023-08-23 at end of day.)
+2023-08-22	Timer set for 30,000 steps by end of day 2023-08-24. (Not completed.)
+2023-08-25	Timer set for 40,000 steps by end of day 2023-08-26. (Not completed.)
+2023-08-##	Timer set for 60,000 steps by end of day 2023-08-##. (Not completed.)
+2023-08-##	Timer never set for 80,000 steps. (Not completed.)
+2023-08-31	100,000 steps not completed.
+2023-08-31	69,834 steps total at end of challenge (Challenge ended 2023-08-31.)

@@ -1,0 +1,7 @@
+2019-12-01	Timer set for  20,000 steps by end of day 2019-12-03. (Completed evening of 2019-12-03).
+2019-12-06	Timer set for  60,000 steps by end of day 2019-12-08. (Did not complete).
+2019-12-11	Timer set for  90,000 steps by end of day 2019-12-13. (Completed afternoon of 2019-12-13).
+2019-12-18	Timer set for 120,000 steps by end of day 2019-12-20. (Completed afternoon? of 2019-12-18).
+2019-12-23	Timer set for 160,000 steps by end of day 2019-12-25. (Completed evening of 2019-12-24).
+2019-12-31	200,000 steps NOT completed. (Sick over holidays)
+2019-12-31	182,712 steps total at end of month.

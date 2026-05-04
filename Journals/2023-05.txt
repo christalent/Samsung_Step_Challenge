@@ -1,0 +1,9 @@
+2023-05-04	18,984 steps after 9:30am.
+2023-05-03	Timer set for  30,000 steps by end of day 2023-05-05. (Completed after afternoon walk 2023-05-##).
+
+2023-05-08	Timer set for  70,000 steps by end of day 2023-05-10. (Completed ?).
+2023-05-12	Timer set for 100,000 steps by end of day 2023-05-14. (Completed ?).
+2023-05-17	Timer set for 130,000 steps by end of day 2023-05-20. (Completed ?).
+2023-05-23	Timer set for 170,000 steps by end of day 2023-05-25. (Completed ?)
+
+2023-05-31	170,453 steps total at end of month.

@@ -1,0 +1,7 @@
+2025-11-19	Timer set for  40,000 steps by end of day 2025-11-21. (Completed afternoon of 2025-11-19.)
+2025-11-24	Timer set for  80,000 steps by end of day 2025-11-26. (Completed first thing morning of 2025-11-25.)
+2025-12-01	Timer set for 120,000 steps by end of day 2025-12-03. (Completed morning of 2025-11-30.)
+2025-12-06	Timer set for 160,000 steps by end of day 2025-12-08. (Completed during morning walk 2025-03-04).
+2025-12-14	Timer set for 200,000 steps by end of day 2025-12-16. (Completed evening of 2025-12-09.)
+2025-12-09	200,000 steps completed evening of 2025-12-09.
+2025-12-11	221,020 steps at the end of the challenge.

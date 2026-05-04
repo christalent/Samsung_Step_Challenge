@@ -1,0 +1,8 @@
+2021-04-02	Timer set for  20,000 steps by end of day 2021-04-04. (Did not complete (flu).)
+2021-04-##	Timer set for  35,000 steps by end of day 2021-04-##. (Did not complete (flu).)
+2021-04-10	Timer set for  70,000 steps by end of day 2021-04-12. (Did not complete.)
+2021-04-16	Timer set for 100,000 steps by end of day 2021-04-18. (Did not complete.)
+2021-04-23	Timer set for 150,000 steps by end of day 2021-04-25. (Did not complete.)
+
+2021-04-30	146.262 steps total at end of month.
+

@@ -1,0 +1,8 @@
+2019-09-03	Timer set for  30,000 steps by end of day 2019-09-05. (Completed after morning walk 2019-09-04).
+2019-09-08	Timer set for  70,000 steps by end of day 2019-09-10. (Completed after lawn mowing  2019-09-08).
+2019-09-??	Timer set for 100,000 steps by end of day 2019-09-??. (Completed after              2019-09-11).
+2019-09-??	Timer set for 130,000 steps by end of day 2019-09-??. (Completed after morning      2019-09-16).
+2019-09-??	Timer set for 170,000 steps by end of day 2019-09-??. (Completed after evening      2019-09-19).
+2019-09-24	200,000 steps completed  2019-09-24. (Completed afternoon walking during errand.)
+
+2019-09-30	248,766 steps total at end of month.

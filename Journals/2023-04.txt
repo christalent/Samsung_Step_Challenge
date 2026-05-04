@@ -1,0 +1,8 @@
+2023-04-02	Timer set for  20,000 steps by end of day 2023-04-04. (Completed afternoon of 2023-04-04.)
+2023-04-05	Timer set for  35,000 steps by end of day 2023-04-07. (Completed afternoon of 2023-04-06.)
+2023-04-11	Timer set for  70,000 steps by end of day 2023-04-13. (Did not complete.)
+2023-04-16	Timer set for 100,000 steps by end of day 2023-04-18. (Did not complete.)
+2023-04-23	Timer set for 150,000 steps by end of day 2023-04-25. (Did not complete.)
+
+2023-04-30	145,018 steps total at end of month.
+

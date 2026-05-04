@@ -1,0 +1,7 @@
+2022-08-02	Timer set for   20,000 steps by end of day 2022-08-04. (Completed 2022-08-03 at start of 10am walk.)
+2022-08-05	Timer set for   35,000 steps by end of day 2022-08-07. (Completed 2022-08-07 during errands in Vancouver.)
+2022-08-12	Timer set for   70,000 steps by end of day 2022-08-14. (Completed 2022-08-10 by the end of the day.)
+2022-08-##	Timer set for  100,000 steps by end of day 2022-08-##. (Completed 2022-08-14 during the day.)
+2022-08-23	Timer set for  150,000 steps by end of day 2022-08-##. (Completed 2022-08-23 by the end of the day.)
+2022-08-30	200,000 steps completed 2022-08-30 in the afternoon at work.
+2022-08-31	204,504 steps total at end of month.

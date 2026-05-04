@@ -1,0 +1,12 @@
+2020-08-02	Timer set for   20,000 steps by end of day 2020-08-04. (Completed 2020-08-02.)
+2020-08-##	Timer set for   35,000 steps by end of day 2020-08-##. (Completed 2020-08-04 morning walk.)
+2020-08-12	Timer set for   70,000 steps by end of day 2020-08-##. (Completed 2020-08-08 morning walk.)
+2020-08-##	Timer set for  100,000 steps by end of day 2020-08-##. (Completed 2020-08-12 by end of day.)
+2020-08-##	Timer set for  150,000 steps by end of day 2020-08-##. (Completed 2020-08-19.)
+2020-08-29	200,000 steps completed first thing in the morning.
+
+2020-08-31	218,343 steps total at end of month.
+
+Note: Started working from home Tuesday, 2020-03-24.
+Back to work in office Tuesday, 2020-08-04, alternating weeks with Amy.
+Start working from office every week starting 2020-08-31.

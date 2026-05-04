@@ -1,0 +1,10 @@
+2023-07-02	Timer set for  25,000 steps by end of day 2023-07-04. (Completed.)
+2023-07-06	Timer set for  65,000 steps by end of day 2023-07-08. (Did not complete.)
+2023-07-12	Timer set for 100,000 steps by end of day 2023-07-14. (Did not complete.)
+2023-07-17	Timer set for 140,000 steps by end of day 2023-07-19. (Did not complete.)
+2023-07-23	Timer set for 180,000 steps by end of day 2023-07-25. (Did not complete.)
+2023-07-31	200,000 steps completed.
+2023-07-31	201,982 steps total at end of month.
+
+---
+2023-07-21	Purchased Samsung Watch5 Pro, increased accurracy in total number of steps.

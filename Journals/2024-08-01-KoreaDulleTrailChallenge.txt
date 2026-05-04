@@ -1,0 +1,8 @@
+2024-08-01	Timer set for 10,000 steps by end of day 2024-08-02. (Completed 2024-08-02 early in the morning.)
+2024-08-##	Timer set for 30,000 steps by end of day 2024-08-##. (Completed 2024-08-05 in the evening.)
+2024-08-##	Timer set for 40,000 steps by end of day 2024-08-##. (Completed 2024-08-05 during 9:30am walk.)
+2024-08-##	Timer set for 60,000 steps by end of day 2024-08-##. (Completed 2024-08-07 before morning walk.)
+2024-08-##	Timer set for 80,000 steps by end of day 2024-08-##. (Completed 2024-08-08 shortly after work.)
+2024-08-12	100,000 steps completed during 9:30am walk.
+2024-08-31	325,881 steps total at end of Korea Dulle Trail Challenge.
+

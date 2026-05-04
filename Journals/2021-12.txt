@@ -1,0 +1,10 @@
+2021-12-01	Timer set for  20,000 steps by end of day 2021-12-03. (Completed   2021-12-03.)
+2021-12-06	Timer set for  60,000 steps by end of day 2021-12-08. (Did not complete.)
+2021-12-11	Timer set for  90,000 steps by end of day 2021-12-13. (Completed   2021-12-##.)
+2021-12-18	Timer set for 120,000 steps by end of day 2021-12-20. (Completed   2021-12-##.)
+
+2021-12-23	Timer set for 160,000 steps by end of day 2021-12-25. (Completed   2021-12-##.)
+
+2021-12-31	???,??? steps total at end of month. (2020)
+
+Note: Tested positive for COVID Wednesday, December 29th.

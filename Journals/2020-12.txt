@@ -1,0 +1,6 @@
+2020-12-01	Timer set for  20,000 steps by end of day 2020-12-03. (Completed evening of 2020-12-02).
+2020-12-06	Timer set for  60,000 steps by end of day 2020-12-08. (Completed evening of 2020-12-08).
+2020-12-11	Timer set for  90,000 steps by end of day 2020-12-13. (Completed morning of 2020-12-13).
+2020-12-18	Timer set for 120,000 steps by end of day 2020-12-20. (Completed afternoon of 2020-12-18).
+2020-12-23	Timer set for 160,000 steps by end of day 2020-12-25. (Completed morning of 2020-12-24).
+2020-12-31	203,437 steps total at end of month.

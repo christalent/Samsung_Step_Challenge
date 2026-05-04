@@ -1,0 +1,8 @@
+2026-02-04	Timer set for  30,000 steps by end of day 2026-02-06. (Completed afternoon of 2026-02-05.)
+2026-02-09	Timer set for  70,000 steps by end of day 2025-02-11. (Completed afternoon of 2026-02-11.)
+2026-02-14	Timer set for 100,000 steps by end of day 2026-02-16. (Completed afternoon of 2026-02-16.)
+2026-02-19	Timer set for 130,000 steps by end of day 2026-02-21. (Completed early morning of 2026-02-21.)
+2026-02-24	Timer set for 170,000 steps by end of day 2026-02-26 (Completed afternoon of 2026-02-25.)
+2026-02-28	198,083 steps at the end of the month.
+
+Started challenge 1 day late (2026-02-02), seems to have skewed numbers by 1 day.

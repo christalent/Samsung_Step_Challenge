@@ -1,0 +1,12 @@
+2020-07-##	Timer set for   25,000 steps by end of day 2020-07-##. (Completed 2020-07-##)
+2020-07-##	Timer set for   65,000 steps by end of day 2020-07-##. (Completed 2020-07-##)
+2020-07-12	Timer set for  100,000 steps by end of day 2020-07-14. (Completed 2020-07-##)
+2020-07-##	Timer set for  140,000 steps by end of day 2020-07-##. (Completed 2020-07-##)
+2020-07-##	Timer set for  180,000 steps by end of day 2020-07-##. (Completed 2020-07-##)
+
+2020-07-29?	200,000 steps completed during the day. (Had 195,928 after 10am walk).
+
+2020-07-31	210,486 steps total at end of month.
+
+Note: Started working from home Tuesday, 2020-03-24.
+

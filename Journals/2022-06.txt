@@ -1,0 +1,10 @@
+2022-06-02	Timer set for  20,000 steps by end of day 2022-06-04. (Not completed.)
+2022-06-05	Timer set for  35,500 steps by end of day 2022-06-07. (Not completed.)
+2022-06-11	Timer set for  70,000 steps by end of day 2022-06-13. (Not completed.)
+2022-06-##	Timer set for 100,000 steps by end of day 2022-06-??. (Not completed.)
+2022-06-22	Timer set for 150,000 steps by end of day 2022-06-24. (Not completed.)
+
+2022-06-##	200,000 steps completed 
+
+2022-06-30	181,811 steps total at end of month.
+

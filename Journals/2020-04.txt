@@ -1,0 +1,10 @@
+2020-04-02	Timer set for  10,000 steps by end of day 2020-04-04. (Completed afternoon 2020-04-02.)
+2020-04-##	Timer set for  17,500 steps by end of day 2020-04-##. (Completed ?)
+2020-04-07	Timer set for  35,000 steps by end of day 2020-04-09. (Completed 2020-04-07 afternoon.)
+2020-04-##	Timer set for  50,000 steps by end of day 2020-04-##. (Completed very early.)
+2020-04-##	Timer set for  75,000 steps by end of day 2020-04-##. (Completed very early.)
+2020-04-24	100,000 steps completed during the day.
+
+2020-04-30	127,747 steps total at end of month.
+
+Note: Started working from home Tuesday, 2020-03-24.

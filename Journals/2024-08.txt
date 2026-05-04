@@ -1,0 +1,6 @@
+2024-08-02	Timer set for  20,000 steps by end of day 2024-08-04. (Completed 2024-08-02 after 3pm walk.)
+2024-08-05	Timer set for  35,000 steps by end of day 2024-08-07. (Completed 2024-08-03 walking to lake concert.)
+2024-08-12	Timer set for  70,000 steps by end of day 2024-08-14. (Completed 2024-08-07 in the evening.)
+2024-08-##	Timer set for 100,000 steps by end of day 2023-08-##. (Completed 2023-08-12 during 9:30am walk.)
+2024-08-23	Timer set for 150,000 steps by end of day 2023-08-25. (Completed 2024-08-16 during the day.)
+2024-08-31	325,881 steps total at end of month.

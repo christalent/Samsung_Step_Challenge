@@ -1,0 +1,11 @@
+2021-06-02	Timer set for  20,000 steps by end of day 2021-06-04. (Completed during morning walk 2021-06-04.)
+2021-06-05	Timer set for  35,500 steps by end of day 2021-06-07. (Completed during morning walk 2021-06-06.)
+2021-06-##	Timer set for  70,000 steps by end of day 2021-06-??. (Completed during afternoon walk 2021-06-09.)
+2021-06-##	Timer set for 100,000 steps by end of day 2021-06-??. (Completed by the end of the day 2021-06-13.)
+2021-06-##	Timer set for 150,000 steps by end of day 2021-06-??. (Completed during afternoon walk 2021-06-18.)
+2021-06-25	200,000 steps completed during morning lake walk with Jen.
+2021-06-30	248,600 steps total at end of month.
+
+Note: No  70,000 step timer set as of 3am 2021-06-09.
+Note: No 100,000 step timer set as of 7pm 2021-06-13.
+Note: No 150,000 step timer set as of 3pm 2021-06-18.

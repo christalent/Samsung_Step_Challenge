@@ -1,0 +1,11 @@
+2019-08-02	Timer set for  20,000 steps by end of day 2019-08-04. (Completed after   morning walk 2019-08-03).
+2019-08-05	Timer set for  35,000 steps by end of day 2019-08-07. (Completed after   morning walk 2019-08-05).
+2019-08-09	(Timer not yet set for  70,000 steps)
+2019-08-??	Timer set for  70,000 steps by end of day 2019-08-??. (Completed at lunch             2019-08-09).
+2019-08-14	(Timer not yet set for 100,000 steps)
+2019-08-??	Timer set for 100,000 steps by end of day 2019-08-??. (Completed after afternoon walk 2019-08-14).
+2018-08-22	(Timer not yet set for 150,000 steps)
+2019-08-23	Timer set for 150,000 steps by end of day 2019-08-??. (Completed after morning of     2019-08-23).
+2019-08-29	200,000 steps completed first thing in the morning at home 2019-08-29.
+
+2019-08-31	222,618 steps total at end of month.

@@ -1,0 +1,8 @@
+2020-01-02	Timer set for  20,000 steps by end of day 2020-01-04. (Completed at Fred Meyer's on 2020-01-04).
+2020-01-05	Timer set for  35,000 steps by end of day 2020-01-07. (Completed walking around     2020-01-07).
+2020-01-11	Timer set for  70,000 steps by end of day 2020-01-13. (Completed evening of         2012-01-13).
+2020-01-16	Timer set for 100,000 steps by end of day 2020-01-18. (Completed at lunch on        2020-01-17).
+2020-01-23	Timer set for 150,000 steps by end of day 2020-01-25. (Completed at lunch on        2020-01-23).
+2020-01-30	200,000 steps completed during afternoon walk. 
+
+2020-01-31	209,931 steps total at end of month.

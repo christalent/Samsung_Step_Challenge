@@ -1,0 +1,7 @@
+2024-12-01	Timer set for  20,000 steps by end of day 2024-12-03. (Completed 2024-12-03 during afternoon walk.)
+2024-12-06	Timer set for  60,000 steps by end of day 2024-12-08. (Completed 2024-12-08 in the early afternoon.)
+2024-12-11	Timer set for  90,000 steps by end of day 2024-12-13. (Completed 2024-12-11 in the early afternoon.)
+2024-12-18	Timer set for 120,000 steps by end of day 2024-12-20. (Completed 2024-12-15 in the early afternoon.)
+2024-12-23	Timer set for 160,000 steps by end of day 2024-12-25. (Complete 2024-12-19 in the early afternoon.)
+2024-12-25	200,000 steps completed in the morning.
+2023-12-31	255,174 steps total at end of month.

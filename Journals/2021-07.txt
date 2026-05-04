@@ -1,0 +1,7 @@
+2021-07-02	Timer set for  25,000 steps by end of day 2021-07-04. (Completed 2021-07-03 by end of the day.)
+2021-07-06	Timer set for  65,000 steps by end of day 2021-07-08. (Completed 2021-07-08 during 10am walk.)
+2021-07-12	Timer set for 100,000 steps by end of day 2021-07-14. (Completed 2021-07-12 during 10am walk.)
+2021-07-17	Timer set for 140,000 steps by end of day 2021-07-19. (Completed 2021-07-17 in the morning.)
+2021-07-23	Timer set for 180,000 steps by end of day 2021-07-25. (Completed  2021-07-21 at 3pm walk).
+2021-07-24	200,000 steps completed by the end of the day.
+2021-07-31	250,861 steps total at end of month.

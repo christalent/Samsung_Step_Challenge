@@ -1,0 +1,8 @@
+2021-08-02	Timer set for   20,000 steps by end of day 2021-08-04. (Completed 2021-08-03 during morning walk.)
+2021-08-05	Timer set for   35,000 steps by end of day 2021-08-07. (Completed 2021-08-04 during 10am walk.)
+2021-08-12	Timer set for   70,000 steps by end of day 2021-08-##. (Completed 2021-08-??.)
+2021-08-##	Timer set for  100,000 steps by end of day 2021-08-##. (Completed 2021-08-13 while walking in Vancouver mall.)
+2021-08-##	Timer set for  150,000 steps by end of day 2021-08-##. (Completed 2021-08-18 during 3pm walk.)
+2021-08-##	200,000 steps completed 2021-08-25 after 10am walk.
+
+2021-08-31	232,960 steps total at end of month.

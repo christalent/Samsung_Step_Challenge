@@ -1,0 +1,7 @@
+2024-11-03	Timer set for  30,000 steps by end of day 2024-11-05. (Completed morning walk 2024-11-04.)
+2024-11-08	Timer set for  70,000 steps by end of day 2024-11-10. (Completed early afternoon 2024-11-08.)
+2024-11-12	Timer set for 100,000 steps by end of day 2024-11-14. (Completed evening of 2024-11-11.)
+2024-11-18	Timer set for 130,000 steps by end of day 2024-11-20. (Completed 2024-11-18.)
+2024-11-23	Timer set for 170,000 steps by end of day 2023-11-25. (Completed morning of 2024-11-22.)
+2023-11-26	200,000 steps completed during morning walk.
+2023-11-30	236,286 steps at the end of the challenge.
