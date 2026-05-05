@@ -635,13 +635,13 @@
                 const month = monthObj.name;
                 
                 for (const chal of monthObj.challenges) {
+                    const completionDate = userData.completionDates[key] || '';
+                    const year = completionDate ? completionDate.substring(0, 4) : new Date().getFullYear();
                     const key = `${year}_${month}_${chal.star}`;
                     const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
-                    const completionDate = userData.completionDates[key] || '';
                     const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
                     
                     const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
-                    const year = completionDate ? completionDate.substring(0, 4) : new Date().getFullYear();
                     html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
                         <td>
                             <input type="checkbox" 
