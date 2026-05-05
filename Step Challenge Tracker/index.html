@@ -324,6 +324,10 @@
             updateLastUpdated();
             updateStatus('Connected to OwnCloud', 'connected');
             
+            // Auto-select current month in filter
+            document.getElementById('month-filter').value = getCurrentMonthName();
+            filterTable();
+            
             document.getElementById('steps-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') updateSteps();
             });
