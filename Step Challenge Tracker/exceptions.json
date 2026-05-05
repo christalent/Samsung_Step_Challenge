@@ -1,4 +1,13 @@
 {
   "_comment": "Override default star challenge dates for specific year-months. Format: 'YYYY-MM': { star_number: { start_day, end_day } }",
-  "exceptions": {}
+  "exceptions": {
+    "2026-FEBRUARY": {
+      "1": { "start_day": 4, "end_day": 6 },
+      "2": { "start_day": 9, "end_day": 11 },
+      "3": { "start_day": 13, "end_day": 15 },
+      "4": { "start_day": 19, "end_day": 21 },
+      "5": { "start_day": 24, "end_day": 26 },
+      "6": { "start_day": 28, "end_day": 28 }
+    }
+  }
 }
