@@ -34,6 +34,22 @@
             margin-top: 25px;
         }
         
+        .status-bar {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #8b949e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-bar .connected { color: #238636; }
+        .status-bar .offline { color: #f85149; }
+        
         /* Stats Cards */
         .stats-grid {
             display: grid;
@@ -62,13 +78,8 @@
             margin-top: 5px;
         }
         
-        .stat-card .value.highlight {
-            color: #58a6ff;
-        }
-        
-        .stat-card .value.warning {
-            color: #d29922;
-        }
+        .stat-card .value.highlight { color: #58a6ff; }
+        .stat-card .value.warning { color: #d29922; }
         
         /* Step Input Section */
         .step-input-section {
@@ -106,9 +117,7 @@
             cursor: pointer;
         }
         
-        .step-input-row button:hover {
-            background: #2ea043;
-        }
+        .step-input-row button:hover { background: #2ea043; }
         
         .last-updated {
             font-size: 0.8rem;
@@ -145,9 +154,7 @@
             min-width: 700px;
         }
         
-        thead {
-            background: #1c2128;
-        }
+        thead { background: #1c2128; }
         
         th {
             padding: 12px 15px;
@@ -165,17 +172,9 @@
             font-size: 0.9rem;
         }
         
-        tr:last-child td {
-            border-bottom: none;
-        }
+        tr:last-child td { border-bottom: none; }
         
-        tr.completed {
-            opacity: 0.5;
-        }
-        
-        tr.completed td:first-child {
-            text-decoration: line-through;
-        }
+        tr.completed { opacity: 0.5; }
         
         input[type="checkbox"] {
             width: 18px;
@@ -184,62 +183,43 @@
             accent-color: #238636;
         }
         
-        input[type="date"] {
+        input[type="date"], input[type="number"] {
             background: #0d1117;
             border: 1px solid #30363d;
             border-radius: 4px;
             color: #c9d1d9;
             padding: 5px 8px;
             font-size: 0.85rem;
-            width: 130px;
         }
         
-        .star-num {
-            font-weight: 600;
-            color: #d29922;
-        }
+        input[type="date"] { width: 130px; }
+        input[type="number"] { width: 100px; }
         
-        .steps-required {
-            color: #8b949e;
-            font-size: 0.8rem;
-        }
+        .star-num { font-weight: 600; color: #d29922; }
+        .steps-required { color: #8b949e; font-size: 0.8rem; }
         
-        .loading {
+        .loading, .error {
+            padding: 20px;
+            text-align: center;
             color: #58a6ff;
-            padding: 20px;
-            text-align: center;
         }
-        
-        .error {
-            color: #f85149;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .loading {
-            color: #58a6ff;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.2rem;
-        }
+        .error { color: #f85149; }
         
         @media (max-width: 600px) {
-            .stat-card .value {
-                font-size: 1.4rem;
-            }
-            .step-input-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .step-input-row input[type="number"] {
-                width: 100%;
-            }
+            .stat-card .value { font-size: 1.4rem; }
+            .step-input-row { flex-direction: column; align-items: stretch; }
+            .step-input-row input[type="number"] { width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⭐ Step Challenge Tracker</h1>
+        
+        <div class="status-bar">
+            <span id="status-text">Checking OwnCloud connection...</span>
+            <span id="sync-status"></span>
+        </div>
         
         <div class="stats-grid" id="stats">
             <div class="stat-card">
@@ -301,62 +281,132 @@
                     </tr>
                 </thead>
                 <tbody id="challenge-body">
-                    <tr><td colspan="7" class="loading">Loading challenge data...</td></tr>
+                    <tr><td colspan="7" class="loading">Loading...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
     
     <script>
+        // ========== CHALLENGE DATA (embedded - no fetch needed) ==========
+        const CHALLENGE_DATA = {
+            "challenge_tiers": [
+                {"name":"JANUARY","challenges":[{"star":1,"steps":20000,"start_day":2,"end_day":4},{"star":2,"steps":35000,"start_day":5,"end_day":7},{"star":3,"steps":70000,"start_day":11,"end_day":13},{"star":4,"steps":100000,"start_day":16,"end_day":18},{"star":5,"steps":150000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"FEBRUARY","challenges":[{"star":1,"steps":30000,"start_day":3,"end_day":5},{"star":2,"steps":70000,"start_day":8,"end_day":10},{"star":3,"steps":100000,"start_day":12,"end_day":14},{"star":4,"steps":130000,"start_day":18,"end_day":20},{"star":5,"steps":170000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":28,"end_day":28}]},
+                {"name":"MARCH","challenges":[{"star":1,"steps":20000,"start_day":1,"end_day":3},{"star":2,"steps":60000,"start_day":6,"end_day":8},{"star":3,"steps":90000,"start_day":11,"end_day":13},{"star":4,"steps":120000,"start_day":18,"end_day":20},{"star":5,"steps":160000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"APRIL","challenges":[{"star":1,"steps":20000,"start_day":2,"end_day":4},{"star":2,"steps":35000,"start_day":5,"end_day":7},{"star":3,"steps":70000,"start_day":10,"end_day":13},{"star":4,"steps":100000,"start_day":16,"end_day":18},{"star":5,"steps":150000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":30,"end_day":30}]},
+                {"name":"MAY","challenges":[{"star":1,"steps":30000,"start_day":3,"end_day":5},{"star":2,"steps":70000,"start_day":8,"end_day":10},{"star":3,"steps":100000,"start_day":12,"end_day":14},{"star":4,"steps":130000,"start_day":17,"end_day":20},{"star":5,"steps":170000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"JUNE","challenges":[{"star":1,"steps":20000,"start_day":2,"end_day":4},{"star":2,"steps":35000,"start_day":5,"end_day":7},{"star":3,"steps":70000,"start_day":10,"end_day":13},{"star":4,"steps":100000,"start_day":16,"end_day":18},{"star":5,"steps":150000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":30,"end_day":30}]},
+                {"name":"JULY","challenges":[{"star":1,"steps":25000,"start_day":2,"end_day":4},{"star":2,"steps":65000,"start_day":6,"end_day":8},{"star":3,"steps":100000,"start_day":12,"end_day":14},{"star":4,"steps":140000,"start_day":17,"end_day":19},{"star":5,"steps":180000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"AUGUST","challenges":[{"star":1,"steps":20000,"start_day":2,"end_day":4},{"star":2,"steps":35000,"start_day":5,"end_day":7},{"star":3,"steps":70000,"start_day":12,"end_day":14},{"star":4,"steps":100000,"start_day":16,"end_day":18},{"star":5,"steps":150000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"SEPTEMBER","challenges":[{"star":1,"steps":30000,"start_day":3,"end_day":5},{"star":2,"steps":70000,"start_day":8,"end_day":10},{"star":3,"steps":100000,"start_day":12,"end_day":14},{"star":4,"steps":130000,"start_day":18,"end_day":20},{"star":5,"steps":170000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":30,"end_day":30}]},
+                {"name":"OCTOBER","challenges":[{"star":1,"steps":20000,"start_day":1,"end_day":3},{"star":2,"steps":60000,"start_day":6,"end_day":8},{"star":3,"steps":90000,"start_day":11,"end_day":13},{"star":4,"steps":120000,"start_day":18,"end_day":20},{"star":5,"steps":160000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]},
+                {"name":"NOVEMBER","challenges":[{"star":1,"steps":30000,"start_day":3,"end_day":5},{"star":2,"steps":70000,"start_day":8,"end_day":10},{"star":3,"steps":100000,"start_day":12,"end_day":14},{"star":4,"steps":130000,"start_day":18,"end_day":20},{"star":5,"steps":170000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":30,"end_day":30}]},
+                {"name":"DECEMBER","challenges":[{"star":1,"steps":20000,"start_day":1,"end_day":3},{"star":2,"steps":60000,"start_day":6,"end_day":8},{"star":3,"steps":90000,"start_day":11,"end_day":13},{"star":4,"steps":120000,"start_day":18,"end_day":20},{"star":5,"steps":160000,"start_day":23,"end_day":25},{"star":6,"steps":200000,"start_day":31,"end_day":31}]}
+            ]
+        };
+
+        // ========== OWN CLOUD WEBDAV CONFIG ==========
+        const OWNCLOUD_URL = 'https://freeshell.de/owncloud/remote.php/webdav/step-tracker-data.json';
+        const OWNCLOUD_USER = 'talent';
+        const OWNCLOUD_PASS = 'mast0d0n';
+        
         // ========== STATE ==========
-        const STORAGE_KEY = 'stepTracker_v1';
-        let challengeData = null;
         let userData = null;
+        let saveTimeout = null;
         
         // ========== INIT ==========
         async function init() {
-            loadUserData();
-            await loadChallengeData();
+            updateStatus('Connecting to OwnCloud...', '');
+            await loadUserData();
             renderTable();
             updateStats();
             updateLastUpdated();
+            updateStatus('Connected to OwnCloud', 'connected');
             
-            // Enter key to update steps
             document.getElementById('steps-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') updateSteps();
             });
         }
         
-        // ========== DATA LOADING ==========
-        async function loadChallengeData() {
+        // ========== STATUS ==========
+        function updateStatus(text, type) {
+            const el = document.getElementById('status-text');
+            el.textContent = text;
+            el.className = type;
+        }
+        
+        function showSync(msg) {
+            document.getElementById('sync-status').textContent = msg;
+        }
+        
+        // ========== DATA LOAD/SAVE ==========
+        async function loadUserData() {
             try {
-                const resp = await fetch('https://raw.githubusercontent.com/christalent/Samsung_Step_Challenge/main/Star%20Challenges%20by%20Month.json');
-                if (!resp.ok) throw new Error('Failed to load');
-                challengeData = await resp.json();
+                const resp = await fetch(OWNCLOUD_URL, {
+                    method: 'GET',
+                    headers: { 'Authorization': 'Basic ' + btoa(OWNCLOUD_USER + ':' + OWNCLOUD_PASS) }
+                });
+                
+                if (resp.ok) {
+                    const data = await resp.json();
+                    userData = data;
+                } else {
+                    // File doesn't exist yet, use defaults
+                    userData = getDefaultUserData();
+                }
             } catch (e) {
-                document.getElementById('challenge-body').innerHTML = 
-                    '<tr><td colspan="7" class="error">Failed to load challenge data. Check internet connection.</td></tr>';
-                throw e;
+                // OwnCloud unavailable, try localStorage
+                console.warn('OwnCloud unavailable, using localStorage:', e);
+                updateStatus('OwnCloud offline - using local storage', 'offline');
+                const stored = localStorage.getItem('stepTracker_v1');
+                if (stored) {
+                    userData = JSON.parse(stored);
+                } else {
+                    userData = getDefaultUserData();
+                }
             }
         }
         
-        function loadUserData() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                userData = JSON.parse(stored);
-            } else {
-                userData = {
-                    currentSteps: 0,
-                    completedStars: {},  // { "JANUARY": [1, 3], ... }
-                    completionDates: {}, // { "JANUARY_3": "2026-01-15", ... }
-                    lastUpdated: null
-                };
-            }
+        function getDefaultUserData() {
+            return {
+                currentSteps: 0,
+                completedStars: {},
+                completionDates: {},
+                lastUpdated: null
+            };
         }
         
-        function saveUserData() {
+        async function saveUserData() {
             userData.lastUpdated = new Date().toISOString();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+            
+            // Debounce saves
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(async () => {
+                showSync('Saving...');
+                try {
+                    const resp = await fetch(OWNCLOUD_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(OWNCLOUD_USER + ':' + OWNCLOUD_PASS),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userData)
+                    });
+                    
+                    if (resp.ok || resp.status === 201 || resp.status === 204) {
+                        showSync('Saved ✓');
+                        setTimeout(() => showSync(''), 2000);
+                    } else {
+                        throw new Error('Save failed: ' + resp.status);
+                    }
+                } catch (e) {
+                    console.warn('OwnCloud save failed, using localStorage:', e);
+                    localStorage.setItem('stepTracker_v1', JSON.stringify(userData));
+                    showSync('Saved (local) ✓');
+                    setTimeout(() => showSync(''), 2000);
+                }
+            }, 500);
         }
         
         // ========== CALCULATIONS ==========
@@ -365,39 +415,28 @@
         }
         
         function getMonthIndex(monthName) {
-            const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
-                           'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
-            return months.indexOf(monthName);
+            return ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                    'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'].indexOf(monthName);
         }
         
-        function getMonthName(now) {
+        function getCurrentMonthName() {
             const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
                            'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
-            return months[now.getMonth()];
+            return months[new Date().getMonth()];
         }
         
         function formatDate(year, month, day) {
             return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         }
         
-        function parseDate(str) {
-            if (!str) return '';
-            return str;
-        }
-        
         function calcStartEndDates(monthName, startDay, endDay) {
             const now = new Date();
             const year = now.getFullYear();
             const monthIdx = getMonthIndex(monthName);
-            
-            // Handle month overflow (e.g., day 31 in February)
             const daysInMonth = getDaysInMonth(year, monthIdx);
-            const start = Math.min(startDay, daysInMonth);
-            const end = Math.min(endDay, daysInMonth);
-            
             return {
-                start: formatDate(year, monthIdx, start),
-                end: formatDate(year, monthIdx, end)
+                start: formatDate(year, monthIdx, Math.min(startDay, daysInMonth)),
+                end: formatDate(year, monthIdx, Math.min(endDay, daysInMonth))
             };
         }
         
@@ -419,7 +458,7 @@
             
             const neededEl = document.getElementById('needed-daily');
             neededEl.textContent = neededDaily.toLocaleString();
-            neededEl.className = 'value' + (neededDaily > avgDaily ? ' warning' : '');
+            neededEl.className = 'value' + (neededDaily > avgDaily && avgDaily > 0 ? ' warning' : '');
         }
         
         function updateLastUpdated() {
@@ -445,18 +484,12 @@
         // ========== TABLE RENDERING ==========
         function renderTable() {
             const tbody = document.getElementById('challenge-body');
-            if (!challengeData) {
-                tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading...</td></tr>';
-                return;
-            }
-            
             const now = new Date();
-            const currentMonth = getMonthName(now);
+            const currentMonth = getCurrentMonthName();
             let html = '';
             
-            for (const monthObj of challengeData.challenge_tiers) {
+            for (const monthObj of CHALLENGE_DATA.challenge_tiers) {
                 const month = monthObj.name;
-                const isPast = getMonthIndex(month) < getMonthIndex(currentMonth);
                 
                 for (const chal of monthObj.challenges) {
                     const key = `${month}_${chal.star}`;
@@ -468,8 +501,7 @@
                         <td>
                             <input type="checkbox" 
                                    ${isCompleted ? 'checked' : ''} 
-                                   onchange="toggleStar('${month}', ${chal.star}, this.checked)"
-                                   ${isPast && !isCompleted ? '' : ''}>
+                                   onchange="toggleStar('${month}', ${chal.star}, this.checked)">
                         </td>
                         <td class="star-num">★${chal.star}</td>
                         <td>${month}</td>
@@ -491,13 +523,8 @@
         function filterTable() {
             const filter = document.getElementById('month-filter').value;
             const rows = document.querySelectorAll('#challenge-body tr');
-            
             rows.forEach(row => {
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else {
-                    row.style.display = row.dataset.month === filter ? '' : 'none';
-                }
+                row.style.display = (filter === 'all' || row.dataset.month === filter) ? '' : 'none';
             });
         }
         
@@ -511,64 +538,50 @@
                 if (!userData.completedStars[month].includes(star)) {
                     userData.completedStars[month].push(star);
                 }
-                // Auto-set today's date if not already set
                 const key = `${month}_${star}`;
                 if (!userData.completionDates[key]) {
                     userData.completionDates[key] = new Date().toISOString().split('T')[0];
-                    // Update the date input
-                    const row = document.querySelector(`tr[data-month="${month}"]`);
-                    if (row) {
-                        const dateInput = row.querySelector('input[type="date"]');
-                        if (dateInput) dateInput.value = userData.completionDates[key];
-                    }
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+                    rows.forEach(row => {
+                        const starText = row.querySelector('.star-num')?.textContent || '';
+                        const starNum = parseInt(starText.replace('★', ''));
+                        if (starNum === star) {
+                            row.querySelector('input[type="date"]').value = userData.completionDates[key];
+                        }
+                    });
                 }
             } else {
                 userData.completedStars[month] = userData.completedStars[month].filter(s => s !== star);
-                const key = `${month}_${star}`;
-                delete userData.completionDates[key];
+                delete userData.completionDates[`${month}_${star}`];
             }
             
-            saveUserData();
-            
             // Update row styling
-            const rows = document.querySelectorAll('#challenge-body tr');
+            const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
             rows.forEach(row => {
-                const checkbox = row.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    const rowMonth = row.dataset.month;
-                    const starMatch = row.querySelector('.star-num');
-                    if (rowMonth === month) {
-                        // Find which star this row is
-                        const starText = starMatch?.textContent || '';
-                        const starNum = parseInt(starText.replace('★', ''));
-                        if (starNum === star) {
-                            row.classList.toggle('completed', checked);
-                        }
-                    }
+                const starText = row.querySelector('.star-num')?.textContent || '';
+                const starNum = parseInt(starText.replace('★', ''));
+                if (starNum === star) {
+                    row.classList.toggle('completed', checked);
                 }
             });
+            
+            saveUserData();
         }
         
         function setCompletionDate(month, star, date) {
             const key = `${month}_${star}`;
             if (date) {
                 userData.completionDates[key] = date;
-                // Also mark as completed if not already
                 if (!userData.completedStars[month]?.includes(star)) {
-                    if (!userData.completedStars[month]) {
-                        userData.completedStars[month] = [];
-                    }
+                    if (!userData.completedStars[month]) userData.completedStars[month] = [];
                     userData.completedStars[month].push(star);
-                    // Update checkbox
-                    const rows = document.querySelectorAll('#challenge-body tr');
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
                     rows.forEach(row => {
-                        if (row.dataset.month === month) {
-                            const starText = row.querySelector('.star-num')?.textContent || '';
-                            const starNum = parseInt(starText.replace('★', ''));
-                            if (starNum === star) {
-                                row.querySelector('input[type="checkbox"]').checked = true;
-                                row.classList.add('completed');
-                            }
+                        const starText = row.querySelector('.star-num')?.textContent || '';
+                        const starNum = parseInt(starText.replace('★', ''));
+                        if (starNum === star) {
+                            row.querySelector('input[type="checkbox"]').checked = true;
+                            row.classList.add('completed');
                         }
                     });
                 }
