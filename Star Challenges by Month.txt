@@ -4,7 +4,7 @@ JANUARY
 - Star 3: 70,000 — Days 11→13
 - Star 4: 100,000 — Days 16→18
 - Star 5: 150,000 — Days 23→25
-- Star 6: 200,000 — Day 30
+- Star 6: 200,000 — Day 31
 
 FEBRUARY
 - Star 1: 30,000 — Days 3→5
@@ -84,7 +84,7 @@ NOVEMBER
 - Star 3: 100,000 — Days 12→14
 - Star 4: 130,000 — Days 18→20
 - Star 5: 170,000 — Days 23→25
-- Star 6: 200,000 — Day 26-30
+- Star 6: 200,000 — Day 30
 
 DECEMBER
 - Star 1: 20,000 — Days 1→3
