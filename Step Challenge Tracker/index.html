@@ -369,6 +369,14 @@
                     userData = getDefaultUserData();
                 }
             }
+            
+            // Ensure completionDates is always an object, not an array (fixes corrupted data)
+            if (Array.isArray(userData.completionDates)) {
+                userData.completionDates = {};
+            }
+            if (!userData.completionDates || typeof userData.completionDates !== 'object') {
+                userData.completionDates = {};
+            }
         }
         
         function getDefaultUserData() {
@@ -568,8 +576,20 @@
                     });
                 }
             } else {
+                if (!confirm(`Uncheck Star ${star} for ${month}? (Date completed will be retained.)`)) {
+                    // Restore checkbox to checked state
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+                    rows.forEach(row => {
+                        const starText = row.querySelector('.star-num')?.textContent || '';
+                        const starNum = parseInt(starText.replace('★', ''));
+                        if (starNum === star) {
+                            row.querySelector('input[type="checkbox"]').checked = true;
+                        }
+                    });
+                    return;
+                }
                 userData.completedStars[month] = userData.completedStars[month].filter(s => s !== star);
-                delete userData.completionDates[`${month}_${star}`];
+                // Keep completionDates[key] - don't delete
             }
             
             // Update row styling
