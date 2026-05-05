@@ -241,6 +241,10 @@
                 <div class="value highlight" id="current-steps">—</div>
             </div>
             <div class="stat-card">
+                <div class="label">Monthly Total</div>
+                <div class="value highlight" id="monthly-total">—</div>
+            </div>
+            <div class="stat-card">
                 <div class="label">Avg Daily Steps</div>
                 <div class="value highlight" id="avg-daily">—</div>
             </div>
@@ -266,6 +270,10 @@
             <div class="step-input-row">
                 <input type="number" id="steps-input" placeholder="Enter current steps..." min="0">
                 <button onclick="updateSteps()">Update</button>
+            </div>
+            <div class="step-input-row" style="margin-top:8px;">
+                <input type="number" id="monthly-input" placeholder="Monthly total for selected year+month..." min="0">
+                <button onclick="updateMonthlyTotal()">Save</button>
             </div>
             <div class="last-updated" id="last-updated"></div>
         </div>
@@ -432,6 +440,7 @@
                 currentSteps: 0,
                 completedStars: {},
                 completionDates: {},
+                monthlySteps: {},
                 lastUpdated: null
             };
         }
@@ -547,7 +556,14 @@
             const todaysTarget = Math.round((200000 / daysInMonth) * dayOfMonth);
             const stepsToNextStar = calcStepsToNextStar(currentSteps);
             
+            const now = new Date();
+            const year = now.getFullYear();
+            const monthName = getCurrentMonthName();
+            const monthKey = `${year}-${monthName}`;
+            const monthlyTotal = userData.monthlySteps ? userData.monthlySteps[monthKey] : null;
+            
             document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
+            document.getElementById('monthly-total').textContent = monthlyTotal ? monthlyTotal.toLocaleString() : '—';
             document.getElementById('remaining').textContent = remaining.toLocaleString();
             document.getElementById('todays-target').textContent = todaysTarget.toLocaleString();
             document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
@@ -617,6 +633,33 @@
             }
             
             userData.currentSteps = Math.max(0, val);
+            saveUserData();
+            updateStats();
+            updateLastUpdated();
+            input.value = '';
+        }
+        
+        function updateMonthlyTotal() {
+            const input = document.getElementById('monthly-input');
+            const val = parseInt(input.value);
+            
+            if (isNaN(val) || input.value.trim() === '') {
+                input.value = '';
+                return;
+            }
+            
+            const yearFilter = document.getElementById('year-filter').value;
+            const monthFilter = document.getElementById('month-filter').value;
+            
+            if (yearFilter === 'all' || monthFilter === 'all') {
+                alert('Select a specific year and month to save monthly total.');
+                return;
+            }
+            
+            const monthKey = `${yearFilter}-${monthFilter}`;
+            if (!userData.monthlySteps) userData.monthlySteps = {};
+            userData.monthlySteps[monthKey] = Math.max(0, val);
+            
             saveUserData();
             updateStats();
             updateLastUpdated();
