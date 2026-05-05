@@ -54,7 +54,7 @@
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 30px;
         }
@@ -207,7 +207,11 @@
         }
         .error { color: #f85149; }
         
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
             .stat-card .value { font-size: 1.4rem; }
             .step-input-row { flex-direction: column; align-items: stretch; }
             .step-input-row input[type="number"] { width: 100%; }
@@ -229,20 +233,24 @@
                 <div class="value highlight" id="current-steps">—</div>
             </div>
             <div class="stat-card">
-                <div class="label">Remaining to 200K</div>
-                <div class="value" id="remaining">—</div>
+                <div class="label">Avg Daily Steps</div>
+                <div class="value" id="avg-daily">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Steps to Next Star</div>
+                <div class="value" id="steps-to-next-star">—</div>
             </div>
             <div class="stat-card">
                 <div class="label">Today's Target</div>
                 <div class="value" id="todays-target">—</div>
             </div>
             <div class="stat-card">
-                <div class="label">Avg Daily Steps</div>
-                <div class="value" id="avg-daily">—</div>
-            </div>
-            <div class="stat-card">
                 <div class="label">Daily Avg Needed for 200K</div>
                 <div class="value" id="needed-daily">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Remaining to 200K</div>
+                <div class="value" id="remaining">—</div>
             </div>
         </div>
         
@@ -476,15 +484,47 @@
             const avgDaily = dayOfMonth > 0 ? Math.round(currentSteps / dayOfMonth) : 0;
             const neededDaily = daysLeft > 0 ? Math.round(remaining / daysLeft) : remaining;
             const todaysTarget = Math.round((200000 / daysInMonth) * dayOfMonth);
+            const stepsToNextStar = calcStepsToNextStar(currentSteps);
             
             document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
             document.getElementById('remaining').textContent = remaining.toLocaleString();
             document.getElementById('todays-target').textContent = todaysTarget.toLocaleString();
             document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
+            document.getElementById('steps-to-next-star').textContent = stepsToNextStar.toLocaleString();
             
             const neededEl = document.getElementById('needed-daily');
             neededEl.textContent = neededDaily.toLocaleString();
             neededEl.className = 'value' + (neededDaily > avgDaily && avgDaily > 0 ? ' warning' : '');
+        }
+        
+        function calcStepsToNextStar(currentSteps) {
+            const currentMonth = getCurrentMonthName();
+            const monthObj = CHALLENGE_DATA.challenge_tiers.find(m => m.name === currentMonth);
+            if (!monthObj) return 0;
+            
+            const completed = userData.completedStars[currentMonth] || [];
+            const now = new Date();
+            const today = now.getDate();
+            
+            // Find active incomplete star (today within window)
+            for (const chal of monthObj.challenges) {
+                if (completed.includes(chal.star)) continue;
+                if (today >= chal.start_day && today <= chal.end_day) {
+                    return Math.max(0, chal.steps - currentSteps);
+                }
+            }
+            
+            // No active star — find next upcoming incomplete star
+            const upcoming = monthObj.challenges
+                .filter(c => !completed.includes(c.star) && c.start_day > today)
+                .sort((a, b) => a.start_day - b.start_day);
+            
+            if (upcoming.length > 0) {
+                return Math.max(0, upcoming[0].steps - currentSteps);
+            }
+            
+            // All stars done — return 0
+            return 0;
         }
         
         function updateLastUpdated() {
