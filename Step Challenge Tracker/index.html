@@ -635,9 +635,22 @@
                 const month = monthObj.name;
                 
                 for (const chal of monthObj.challenges) {
+                    // Try current year first, then fall back to any year for this month/star
+                    const currentYear = new Date().getFullYear();
+                    let year = currentYear;
+                    let key = `${year}_${month}_${chal.star}`;
+                    if (!userData.completionDates[key]) {
+                        // Key not found - search for this month/star across years
+                        const searchKey = `_${month}_${chal.star}`;
+                        for (const k of Object.keys(userData.completionDates)) {
+                            if (k.endsWith(searchKey)) {
+                                key = k;
+                                year = k.split('_')[0];
+                                break;
+                            }
+                        }
+                    }
                     const completionDate = userData.completionDates[key] || '';
-                    const year = completionDate ? completionDate.substring(0, 4) : new Date().getFullYear();
-                    const key = `${year}_${month}_${chal.star}`;
                     const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
                     const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
                     
