@@ -272,6 +272,18 @@
         
         <h2>Star Challenges</h2>
         <div class="filter-row">
+            <select id="year-filter" onchange="filterTable()">
+                <option value="all">All Years</option>
+                <option value="2026" selected>2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+            </select>
+            &nbsp;
             <select id="month-filter" onchange="filterTable()">
                 <option value="all">All Months</option>
                 <option value="JANUARY">January</option>
@@ -587,7 +599,8 @@
                     const dates = calcStartEndDates(month, chal.start_day, chal.end_day);
                     
                     const isActive = isChallengeActive(month, chal.start_day, chal.end_day);
-                    html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}">
+                    const year = new Date().getFullYear();
+                    html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
                         <td>
                             <input type="checkbox" 
                                    ${isCompleted ? 'checked' : ''} 
@@ -611,10 +624,35 @@
         }
         
         function filterTable() {
-            const filter = document.getElementById('month-filter').value;
+            const yearFilter = document.getElementById('year-filter').value;
+            const monthFilter = document.getElementById('month-filter').value;
             const rows = document.querySelectorAll('#challenge-body tr');
             rows.forEach(row => {
-                row.style.display = (filter === 'all' || row.dataset.month === filter) ? '' : 'none';
+                const matchYear = yearFilter === 'all' || row.dataset.year === yearFilter;
+                const matchMonth = monthFilter === 'all' || row.dataset.month === monthFilter;
+                row.style.display = (matchYear && matchMonth) ? '' : 'none';
+            });
+            updateDateInputConstraints();
+        }
+        
+        function updateDateInputConstraints() {
+            const yearFilter = document.getElementById('year-filter').value;
+            const monthFilter = document.getElementById('month-filter').value;
+            const rows = document.querySelectorAll('#challenge-body tr');
+            rows.forEach(row => {
+                const dateInput = row.querySelector('input[type="date"]');
+                if (!dateInput) return;
+                if (yearFilter === 'all' || monthFilter === 'all') {
+                    dateInput.removeAttribute('min');
+                    dateInput.removeAttribute('max');
+                } else {
+                    const monthIdx = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'].indexOf(monthFilter) + 1;
+                    const daysInMonth = new Date(parseInt(yearFilter), monthIdx, 0).getDate();
+                    const minDate = `${yearFilter}-${String(monthIdx).padStart(2,'0')}-01`;
+                    const maxDate = `${yearFilter}-${String(monthIdx).padStart(2,'0')}-${String(daysInMonth).padStart(2,'0')}`;
+                    dateInput.min = minDate;
+                    dateInput.max = maxDate;
+                }
             });
         }
         
