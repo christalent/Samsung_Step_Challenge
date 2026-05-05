@@ -246,7 +246,7 @@
                 <div class="value goal" id="todays-target">—</div>
             </div>
             <div class="stat-card">
-                <div class="label">Daily Avg Needed for 200K</div>
+                <div class="label">Daily Avg for 200K Goal</div>
                 <div class="value goal" id="needed-daily">—</div>
             </div>
             <div class="stat-card">
@@ -493,9 +493,7 @@
             document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
             document.getElementById('steps-to-next-star').textContent = stepsToNextStar.toLocaleString();
             
-            const neededEl = document.getElementById('needed-daily');
-            neededEl.textContent = neededDaily.toLocaleString();
-            neededEl.className = 'value' + (neededDaily > avgDaily && avgDaily > 0 ? ' warning' : '');
+            document.getElementById('needed-daily').textContent = neededDaily.toLocaleString();
         }
         
         function calcStepsToNextStar(currentSteps) {
