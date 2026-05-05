@@ -1,0 +1,4 @@
+{
+  "_comment": "Override default star challenge dates for specific year-months. Format: 'YYYY-MM': { star_number: { start_day, end_day } }",
+  "exceptions": {}
+}
