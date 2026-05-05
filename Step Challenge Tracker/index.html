@@ -196,6 +196,7 @@
         input[type="number"] { width: 100px; }
         
         .star-num { font-weight: 600; color: #d29922; }
+        .star-num.star-active { color: #3fb950; text-shadow: 0 0 8px rgba(63, 185, 80, 0.5); }
         .steps-required { color: #8b949e; font-size: 0.8rem; }
         
         .loading, .error {
@@ -450,6 +451,14 @@
             };
         }
         
+        function isChallengeActive(monthName, startDay, endDay) {
+            const now = new Date();
+            const currentMonth = getCurrentMonthName();
+            if (monthName !== currentMonth) return false;
+            const today = now.getDate();
+            return today >= startDay && today <= endDay;
+        }
+        
         // ========== UI UPDATES ==========
         function updateStats() {
             const now = new Date();
@@ -522,13 +531,14 @@
                     const completionDate = userData.completionDates[key] || '';
                     const dates = calcStartEndDates(month, chal.start_day, chal.end_day);
                     
-                    html += `<tr class="${isCompleted ? 'completed' : ''}" data-month="${month}">
+                    const isActive = isChallengeActive(month, chal.start_day, chal.end_day);
+                    html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}">
                         <td>
                             <input type="checkbox" 
                                    ${isCompleted ? 'checked' : ''} 
                                    onchange="toggleStar('${month}', ${chal.star}, this.checked)">
                         </td>
-                        <td class="star-num">★${chal.star}</td>
+                        <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
                         <td>${month}</td>
                         <td>${dates.start}</td>
                         <td>${dates.end}</td>
