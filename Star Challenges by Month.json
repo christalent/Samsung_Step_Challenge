@@ -1,0 +1,496 @@
+{
+  "challenge_tiers": [
+    {
+      "name": "JANUARY",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 2,
+          "end_day": 4
+        },
+        {
+          "star": 2,
+          "steps": 35000,
+          "start_day": 5,
+          "end_day": 7
+        },
+        {
+          "star": 3,
+          "steps": 70000,
+          "start_day": 11,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 100000,
+          "start_day": 16,
+          "end_day": 18
+        },
+        {
+          "star": 5,
+          "steps": 150000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 30,
+          "end_day": 30
+        }
+      ]
+    },
+    {
+      "name": "FEBRUARY",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 30000,
+          "start_day": 3,
+          "end_day": 5
+        },
+        {
+          "star": 2,
+          "steps": 70000,
+          "start_day": 8,
+          "end_day": 10
+        },
+        {
+          "star": 3,
+          "steps": 100000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 130000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 170000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 28,
+          "end_day": 28
+        }
+      ]
+    },
+    {
+      "name": "MARCH",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 1,
+          "end_day": 3
+        },
+        {
+          "star": 2,
+          "steps": 60000,
+          "start_day": 6,
+          "end_day": 8
+        },
+        {
+          "star": 3,
+          "steps": 90000,
+          "start_day": 11,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 120000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 160000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    },
+    {
+      "name": "APRIL",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 2,
+          "end_day": 4
+        },
+        {
+          "star": 2,
+          "steps": 35000,
+          "start_day": 5,
+          "end_day": 7
+        },
+        {
+          "star": 3,
+          "steps": 70000,
+          "start_day": 10,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 100000,
+          "start_day": 16,
+          "end_day": 18
+        },
+        {
+          "star": 5,
+          "steps": 150000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 30,
+          "end_day": 30
+        }
+      ]
+    },
+    {
+      "name": "MAY",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 30000,
+          "start_day": 3,
+          "end_day": 5
+        },
+        {
+          "star": 2,
+          "steps": 70000,
+          "start_day": 8,
+          "end_day": 10
+        },
+        {
+          "star": 3,
+          "steps": 100000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 130000,
+          "start_day": 17,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 170000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    },
+    {
+      "name": "JUNE",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 2,
+          "end_day": 4
+        },
+        {
+          "star": 2,
+          "steps": 35000,
+          "start_day": 5,
+          "end_day": 7
+        },
+        {
+          "star": 3,
+          "steps": 70000,
+          "start_day": 10,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 100000,
+          "start_day": 16,
+          "end_day": 18
+        },
+        {
+          "star": 5,
+          "steps": 150000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 30,
+          "end_day": 30
+        }
+      ]
+    },
+    {
+      "name": "JULY",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 25000,
+          "start_day": 2,
+          "end_day": 4
+        },
+        {
+          "star": 2,
+          "steps": 65000,
+          "start_day": 6,
+          "end_day": 8
+        },
+        {
+          "star": 3,
+          "steps": 100000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 140000,
+          "start_day": 17,
+          "end_day": 19
+        },
+        {
+          "star": 5,
+          "steps": 180000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    },
+    {
+      "name": "AUGUST",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 2,
+          "end_day": 4
+        },
+        {
+          "star": 2,
+          "steps": 35000,
+          "start_day": 5,
+          "end_day": 7
+        },
+        {
+          "star": 3,
+          "steps": 70000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 100000,
+          "start_day": 16,
+          "end_day": 18
+        },
+        {
+          "star": 5,
+          "steps": 150000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    },
+    {
+      "name": "SEPTEMBER",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 30000,
+          "start_day": 3,
+          "end_day": 5
+        },
+        {
+          "star": 2,
+          "steps": 70000,
+          "start_day": 8,
+          "end_day": 10
+        },
+        {
+          "star": 3,
+          "steps": 100000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 130000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 170000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 30,
+          "end_day": 30
+        }
+      ]
+    },
+    {
+      "name": "OCTOBER",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 1,
+          "end_day": 3
+        },
+        {
+          "star": 2,
+          "steps": 60000,
+          "start_day": 6,
+          "end_day": 8
+        },
+        {
+          "star": 3,
+          "steps": 90000,
+          "start_day": 11,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 120000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 160000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    },
+    {
+      "name": "NOVEMBER",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 30000,
+          "start_day": 3,
+          "end_day": 5
+        },
+        {
+          "star": 2,
+          "steps": 70000,
+          "start_day": 8,
+          "end_day": 10
+        },
+        {
+          "star": 3,
+          "steps": 100000,
+          "start_day": 12,
+          "end_day": 14
+        },
+        {
+          "star": 4,
+          "steps": 130000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 170000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 26,
+          "end_day": 26
+        }
+      ]
+    },
+    {
+      "name": "DECEMBER",
+      "challenges": [
+        {
+          "star": 1,
+          "steps": 20000,
+          "start_day": 1,
+          "end_day": 3
+        },
+        {
+          "star": 2,
+          "steps": 60000,
+          "start_day": 6,
+          "end_day": 8
+        },
+        {
+          "star": 3,
+          "steps": 90000,
+          "start_day": 11,
+          "end_day": 13
+        },
+        {
+          "star": 4,
+          "steps": 120000,
+          "start_day": 18,
+          "end_day": 20
+        },
+        {
+          "star": 5,
+          "steps": 160000,
+          "start_day": 23,
+          "end_day": 25
+        },
+        {
+          "star": 6,
+          "steps": 200000,
+          "start_day": 31,
+          "end_day": 31
+        }
+      ]
+    }
+  ]
+}
