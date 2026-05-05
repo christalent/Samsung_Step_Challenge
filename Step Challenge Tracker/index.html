@@ -789,6 +789,10 @@
                 }
             } else {
                 delete userData.completionDates[key];
+                // Also remove from completedStars if date is cleared
+                if (userData.completedStars[year]?.[month]) {
+                    userData.completedStars[year][month] = userData.completedStars[year][month].filter(s => s !== star);
+                }
             }
             saveUserData();
         }
