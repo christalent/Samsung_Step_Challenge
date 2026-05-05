@@ -36,8 +36,8 @@
         {
           "star": 6,
           "steps": 200000,
-          "start_day": 30,
-          "end_day": 30
+          "start_day": 31,
+          "end_day": 31
         }
       ]
     },
@@ -446,8 +446,8 @@
         {
           "star": 6,
           "steps": 200000,
-          "start_day": 26,
-          "end_day": 26
+          "start_day": 30,
+          "end_day": 30
         }
       ]
     },
