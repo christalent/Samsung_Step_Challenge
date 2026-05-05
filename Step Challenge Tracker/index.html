@@ -628,50 +628,57 @@
         function renderTable() {
             const tbody = document.getElementById('challenge-body');
             const now = new Date();
-            const currentMonth = getCurrentMonthName();
+            const currentYear = now.getFullYear();
             let html = '';
+            
+            // Get all years that have data, sorted descending
+            const yearsWithData = Object.keys(userData.completedStars || {}).sort((a, b) => b - a);
             
             for (const monthObj of CHALLENGE_DATA.challenge_tiers) {
                 const month = monthObj.name;
                 
                 for (const chal of monthObj.challenges) {
-                    // Try current year first, then fall back to any year for this month/star
-                    const currentYear = new Date().getFullYear();
-                    let year = currentYear;
-                    let key = `${year}_${month}_${chal.star}`;
-                    if (!userData.completionDates[key]) {
-                        // Key not found - search for this month/star across years
-                        const searchKey = `_${month}_${chal.star}`;
-                        for (const k of Object.keys(userData.completionDates)) {
-                            if (k.endsWith(searchKey)) {
-                                key = k;
-                                year = k.split('_')[0];
-                                break;
-                            }
+                    // Collect all years that have this month/star
+                    const yearsForThisStar = new Set();
+                    
+                    // Check current year first
+                    yearsForThisStar.add(String(currentYear));
+                    
+                    // Also check which other years have completion dates for this star
+                    const searchKey = `_${month}_${chal.star}`;
+                    for (const k of Object.keys(userData.completionDates || {})) {
+                        if (k.endsWith(searchKey)) {
+                            const yr = k.split('_')[0];
+                            yearsForThisStar.add(yr);
                         }
                     }
-                    const completionDate = userData.completionDates[key] || '';
-                    const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
-                    const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
                     
-                    const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
-                    html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
-                        <td>
-                            <input type="checkbox" 
-                                   ${isCompleted ? 'checked' : ''} 
-                                   onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">
-                        </td>
-                        <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
-                        <td>${month}</td>
-                        <td>${dates.start}</td>
-                        <td>${dates.end}</td>
-                        <td>
-                            <input type="date" 
-                                   value="${completionDate}"
-                                   onchange="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)">
-                        </td>
-                        <td class="steps-required">${chal.steps.toLocaleString()}</td>
-                    </tr>`;
+                    // Render a row for each year
+                    for (const year of yearsForThisStar) {
+                        const key = `${year}_${month}_${chal.star}`;
+                        const completionDate = userData.completionDates[key] || '';
+                        const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
+                        const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
+                        const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
+                        
+                        html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
+                            <td>
+                                <input type="checkbox" 
+                                       ${isCompleted ? 'checked' : ''} 
+                                       onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">
+                            </td>
+                            <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
+                            <td>${month}</td>
+                            <td>${dates.start}</td>
+                            <td>${dates.end}</td>
+                            <td>
+                                <input type="date" 
+                                       value="${completionDate}"
+                                       onchange="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)">
+                            </td>
+                            <td class="steps-required">${chal.steps.toLocaleString()}</td>
+                        </tr>`;
+                    }
                 }
             }
             
