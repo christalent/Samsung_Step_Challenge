@@ -187,32 +187,7 @@
         tr.completed-late { opacity: 1; }
         tr.completed-late input[type="checkbox"] { accent-color: #da3633; }
         
-        input.missed-checkbox {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #da3633;
-            border-radius: 3px;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-        }
-        input.missed-checkbox:checked {
-            background: #da3633;
-            border-color: #da3633;
-        }
-        input.missed-checkbox:checked::after {
-            content: ' ';
-            position: absolute;
-            left: 4px;
-            top: 1px;
-            width: 6px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
+
         
         input[type="checkbox"] {
             width: 18px;
@@ -690,7 +665,7 @@
                         
                         html += `<tr class="${isCompleted ? (isLate ? 'completed-late' : 'completed') : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
                             <td style="text-align:center;">
-                                ${isCompleted ? iconSvg : `<input type="checkbox" class="missed-checkbox" onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">`}
+                                ${isCompleted ? iconSvg : `<input type="checkbox" onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">`}
                             </td>
                             <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
                             <td>${month}</td>
