@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Challenge Tracker</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        h2 {
+            color: #8b949e;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            margin-top: 25px;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #8b949e;
+            text-transform: uppercase;
+        }
+        
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #c9d1d9;
+            margin-top: 5px;
+        }
+        
+        .stat-card .value.highlight {
+            color: #58a6ff;
+        }
+        
+        .stat-card .value.warning {
+            color: #d29922;
+        }
+        
+        /* Step Input Section */
+        .step-input-section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .step-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .step-input-row input[type="number"] {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 1.2rem;
+            padding: 10px 15px;
+            width: 200px;
+        }
+        
+        .step-input-row button {
+            background: #238636;
+            border: 1px solid #238636;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        
+        .step-input-row button:hover {
+            background: #2ea043;
+        }
+        
+        .last-updated {
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-top: 10px;
+        }
+        
+        /* Month Filter */
+        .filter-row {
+            margin-bottom: 15px;
+        }
+        
+        .filter-row select {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 1rem;
+            padding: 8px 15px;
+            min-width: 150px;
+        }
+        
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        
+        thead {
+            background: #1c2128;
+        }
+        
+        th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #8b949e;
+            font-weight: 600;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #21262d;
+            font-size: 0.9rem;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr.completed {
+            opacity: 0.5;
+        }
+        
+        tr.completed td:first-child {
+            text-decoration: line-through;
+        }
+        
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #238636;
+        }
+        
+        input[type="date"] {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            color: #c9d1d9;
+            padding: 5px 8px;
+            font-size: 0.85rem;
+            width: 130px;
+        }
+        
+        .star-num {
+            font-weight: 600;
+            color: #d29922;
+        }
+        
+        .steps-required {
+            color: #8b949e;
+            font-size: 0.8rem;
+        }
+        
+        .loading {
+            color: #58a6ff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .error {
+            color: #f85149;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            color: #58a6ff;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 600px) {
+            .stat-card .value {
+                font-size: 1.4rem;
+            }
+            .step-input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .step-input-row input[type="number"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⭐ Step Challenge Tracker</h1>
+        
+        <div class="stats-grid" id="stats">
+            <div class="stat-card">
+                <div class="label">Current Steps</div>
+                <div class="value highlight" id="current-steps">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Remaining to 200K</div>
+                <div class="value" id="remaining">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Avg Daily Steps</div>
+                <div class="value" id="avg-daily">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Daily Avg Needed for 200K</div>
+                <div class="value" id="needed-daily">—</div>
+            </div>
+        </div>
+        
+        <div class="step-input-section">
+            <div class="step-input-row">
+                <input type="number" id="steps-input" placeholder="Enter current steps..." min="0">
+                <button onclick="updateSteps()">Update</button>
+            </div>
+            <div class="last-updated" id="last-updated"></div>
+        </div>
+        
+        <h2>Star Challenges</h2>
+        <div class="filter-row">
+            <select id="month-filter" onchange="filterTable()">
+                <option value="all">All Months</option>
+                <option value="JANUARY">January</option>
+                <option value="FEBRUARY">February</option>
+                <option value="MARCH">March</option>
+                <option value="APRIL">April</option>
+                <option value="MAY">May</option>
+                <option value="JUNE">June</option>
+                <option value="JULY">July</option>
+                <option value="AUGUST">August</option>
+                <option value="SEPTEMBER">September</option>
+                <option value="OCTOBER">October</option>
+                <option value="NOVEMBER">November</option>
+                <option value="DECEMBER">December</option>
+            </select>
+        </div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>✓</th>
+                        <th>Star</th>
+                        <th>Month</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Date Completed</th>
+                        <th>Steps</th>
+                    </tr>
+                </thead>
+                <tbody id="challenge-body">
+                    <tr><td colspan="7" class="loading">Loading challenge data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // ========== STATE ==========
+        const STORAGE_KEY = 'stepTracker_v1';
+        let challengeData = null;
+        let userData = null;
+        
+        // ========== INIT ==========
+        async function init() {
+            loadUserData();
+            await loadChallengeData();
+            renderTable();
+            updateStats();
+            updateLastUpdated();
+            
+            // Enter key to update steps
+            document.getElementById('steps-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') updateSteps();
+            });
+        }
+        
+        // ========== DATA LOADING ==========
+        async function loadChallengeData() {
+            try {
+                const resp = await fetch('https://raw.githubusercontent.com/christalent/Samsung_Step_Challenge/main/Star%20Challenges%20by%20Month.json');
+                if (!resp.ok) throw new Error('Failed to load');
+                challengeData = await resp.json();
+            } catch (e) {
+                document.getElementById('challenge-body').innerHTML = 
+                    '<tr><td colspan="7" class="error">Failed to load challenge data. Check internet connection.</td></tr>';
+                throw e;
+            }
+        }
+        
+        function loadUserData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                userData = JSON.parse(stored);
+            } else {
+                userData = {
+                    currentSteps: 0,
+                    completedStars: {},  // { "JANUARY": [1, 3], ... }
+                    completionDates: {}, // { "JANUARY_3": "2026-01-15", ... }
+                    lastUpdated: null
+                };
+            }
+        }
+        
+        function saveUserData() {
+            userData.lastUpdated = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+        }
+        
+        // ========== CALCULATIONS ==========
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+        
+        function getMonthIndex(monthName) {
+            const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                           'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+            return months.indexOf(monthName);
+        }
+        
+        function getMonthName(now) {
+            const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                           'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+            return months[now.getMonth()];
+        }
+        
+        function formatDate(year, month, day) {
+            return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+        
+        function parseDate(str) {
+            if (!str) return '';
+            return str;
+        }
+        
+        function calcStartEndDates(monthName, startDay, endDay) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const monthIdx = getMonthIndex(monthName);
+            
+            // Handle month overflow (e.g., day 31 in February)
+            const daysInMonth = getDaysInMonth(year, monthIdx);
+            const start = Math.min(startDay, daysInMonth);
+            const end = Math.min(endDay, daysInMonth);
+            
+            return {
+                start: formatDate(year, monthIdx, start),
+                end: formatDate(year, monthIdx, end)
+            };
+        }
+        
+        // ========== UI UPDATES ==========
+        function updateStats() {
+            const now = new Date();
+            const dayOfMonth = now.getDate();
+            const daysInMonth = getDaysInMonth(now.getFullYear(), now.getMonth());
+            const daysLeft = daysInMonth - dayOfMonth;
+            
+            const currentSteps = userData.currentSteps || 0;
+            const remaining = Math.max(0, 200000 - currentSteps);
+            const avgDaily = dayOfMonth > 0 ? Math.round(currentSteps / dayOfMonth) : 0;
+            const neededDaily = daysLeft > 0 ? Math.round(remaining / daysLeft) : remaining;
+            
+            document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
+            document.getElementById('remaining').textContent = remaining.toLocaleString();
+            document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
+            
+            const neededEl = document.getElementById('needed-daily');
+            neededEl.textContent = neededDaily.toLocaleString();
+            neededEl.className = 'value' + (neededDaily > avgDaily ? ' warning' : '');
+        }
+        
+        function updateLastUpdated() {
+            const el = document.getElementById('last-updated');
+            if (userData.lastUpdated) {
+                const date = new Date(userData.lastUpdated);
+                el.textContent = `Last updated: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+            } else {
+                el.textContent = '';
+            }
+        }
+        
+        function updateSteps() {
+            const input = document.getElementById('steps-input');
+            const val = parseInt(input.value) || 0;
+            userData.currentSteps = Math.max(0, val);
+            saveUserData();
+            updateStats();
+            updateLastUpdated();
+            input.value = '';
+        }
+        
+        // ========== TABLE RENDERING ==========
+        function renderTable() {
+            const tbody = document.getElementById('challenge-body');
+            if (!challengeData) {
+                tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading...</td></tr>';
+                return;
+            }
+            
+            const now = new Date();
+            const currentMonth = getMonthName(now);
+            let html = '';
+            
+            for (const monthObj of challengeData.challenge_tiers) {
+                const month = monthObj.name;
+                const isPast = getMonthIndex(month) < getMonthIndex(currentMonth);
+                
+                for (const chal of monthObj.challenges) {
+                    const key = `${month}_${chal.star}`;
+                    const isCompleted = userData.completedStars[month]?.includes(chal.star);
+                    const completionDate = userData.completionDates[key] || '';
+                    const dates = calcStartEndDates(month, chal.start_day, chal.end_day);
+                    
+                    html += `<tr class="${isCompleted ? 'completed' : ''}" data-month="${month}">
+                        <td>
+                            <input type="checkbox" 
+                                   ${isCompleted ? 'checked' : ''} 
+                                   onchange="toggleStar('${month}', ${chal.star}, this.checked)"
+                                   ${isPast && !isCompleted ? '' : ''}>
+                        </td>
+                        <td class="star-num">★${chal.star}</td>
+                        <td>${month}</td>
+                        <td>${dates.start}</td>
+                        <td>${dates.end}</td>
+                        <td>
+                            <input type="date" 
+                                   value="${completionDate}"
+                                   onchange="setCompletionDate('${month}', ${chal.star}, this.value)">
+                        </td>
+                        <td class="steps-required">${chal.steps.toLocaleString()}</td>
+                    </tr>`;
+                }
+            }
+            
+            tbody.innerHTML = html;
+        }
+        
+        function filterTable() {
+            const filter = document.getElementById('month-filter').value;
+            const rows = document.querySelectorAll('#challenge-body tr');
+            
+            rows.forEach(row => {
+                if (filter === 'all') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = row.dataset.month === filter ? '' : 'none';
+                }
+            });
+        }
+        
+        // ========== INTERACTIONS ==========
+        function toggleStar(month, star, checked) {
+            if (!userData.completedStars[month]) {
+                userData.completedStars[month] = [];
+            }
+            
+            if (checked) {
+                if (!userData.completedStars[month].includes(star)) {
+                    userData.completedStars[month].push(star);
+                }
+                // Auto-set today's date if not already set
+                const key = `${month}_${star}`;
+                if (!userData.completionDates[key]) {
+                    userData.completionDates[key] = new Date().toISOString().split('T')[0];
+                    // Update the date input
+                    const row = document.querySelector(`tr[data-month="${month}"]`);
+                    if (row) {
+                        const dateInput = row.querySelector('input[type="date"]');
+                        if (dateInput) dateInput.value = userData.completionDates[key];
+                    }
+                }
+            } else {
+                userData.completedStars[month] = userData.completedStars[month].filter(s => s !== star);
+                const key = `${month}_${star}`;
+                delete userData.completionDates[key];
+            }
+            
+            saveUserData();
+            
+            // Update row styling
+            const rows = document.querySelectorAll('#challenge-body tr');
+            rows.forEach(row => {
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    const rowMonth = row.dataset.month;
+                    const starMatch = row.querySelector('.star-num');
+                    if (rowMonth === month) {
+                        // Find which star this row is
+                        const starText = starMatch?.textContent || '';
+                        const starNum = parseInt(starText.replace('★', ''));
+                        if (starNum === star) {
+                            row.classList.toggle('completed', checked);
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setCompletionDate(month, star, date) {
+            const key = `${month}_${star}`;
+            if (date) {
+                userData.completionDates[key] = date;
+                // Also mark as completed if not already
+                if (!userData.completedStars[month]?.includes(star)) {
+                    if (!userData.completedStars[month]) {
+                        userData.completedStars[month] = [];
+                    }
+                    userData.completedStars[month].push(star);
+                    // Update checkbox
+                    const rows = document.querySelectorAll('#challenge-body tr');
+                    rows.forEach(row => {
+                        if (row.dataset.month === month) {
+                            const starText = row.querySelector('.star-num')?.textContent || '';
+                            const starNum = parseInt(starText.replace('★', ''));
+                            if (starNum === star) {
+                                row.querySelector('input[type="checkbox"]').checked = true;
+                                row.classList.add('completed');
+                            }
+                        }
+                    });
+                }
+            } else {
+                delete userData.completionDates[key];
+            }
+            saveUserData();
+        }
+        
+        // ========== START ==========
+        init();
+    </script>
+</body>
+</html>
