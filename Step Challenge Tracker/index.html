@@ -184,6 +184,8 @@
         tr:last-child td { border-bottom: none; }
         
         tr.completed { opacity: 0.5; }
+        tr.completed-late { opacity: 1; }
+        tr.completed-late input[type="checkbox"] { accent-color: #da3633; }
         
         input[type="checkbox"] {
             width: 18px;
@@ -658,8 +660,9 @@
                         const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
                         const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star, year);
                         const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
+                        const isLate = completionDate && completionDate > dates.end;
                         
-                        html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
+                        html += `<tr class="${isCompleted ? (isLate ? 'completed-late' : 'completed') : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
                             <td>
                                 <input type="checkbox" 
                                        ${isCompleted ? 'checked' : ''} 
