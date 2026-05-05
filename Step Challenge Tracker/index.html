@@ -347,12 +347,14 @@
         
         // ========== STATE ==========
         let userData = null;
+        let exceptionsData = null;
         let saveTimeout = null;
         
         // ========== INIT ==========
         async function init() {
             updateStatus('Connecting to OwnCloud...', '');
             await loadUserData();
+            await loadExceptions();
             renderTable();
             updateStats();
             updateLastUpdated();
@@ -379,6 +381,18 @@
         }
         
         // ========== DATA LOAD/SAVE ==========
+        async function loadExceptions() {
+            try {
+                const resp = await fetch(API_URL + '?type=exceptions');
+                if (resp.ok) {
+                    exceptionsData = await resp.json();
+                }
+            } catch (e) {
+                console.warn('Could not load exceptions:', e);
+                exceptionsData = { exceptions: {} };
+            }
+        }
+        
         async function loadUserData() {
             try {
                 const resp = await fetch(API_URL, {
@@ -473,22 +487,49 @@
             return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         }
         
-        function calcStartEndDates(monthName, startDay, endDay) {
+        function getExceptionDates(year, monthName, star) {
+            if (!exceptionsData || !exceptionsData.exceptions) return null;
+            const key = `${year}-${monthName.toUpperCase().substring(0,3).toUpperCase()}`;
+            const monthKey = `${year}-${monthName.toUpperCase()}`;
+            if (exceptionsData.exceptions[monthKey] && exceptionsData.exceptions[monthKey][star]) {
+                return exceptionsData.exceptions[monthKey][star];
+            }
+            return null;
+        }
+        
+        function calcStartEndDates(monthName, startDay, endDay, star) {
             const now = new Date();
             const year = now.getFullYear();
             const monthIdx = getMonthIndex(monthName);
             const daysInMonth = getDaysInMonth(year, monthIdx);
+            
+            // Check for exception dates
+            const exception = getExceptionDates(year, monthName, star);
+            if (exception) {
+                startDay = exception.start_day;
+                endDay = exception.end_day;
+            }
+            
             return {
                 start: formatDate(year, monthIdx, Math.min(startDay, daysInMonth)),
                 end: formatDate(year, monthIdx, Math.min(endDay, daysInMonth))
             };
         }
         
-        function isChallengeActive(monthName, startDay, endDay) {
+        function isChallengeActive(monthName, startDay, endDay, star) {
             const now = new Date();
             const currentMonth = getCurrentMonthName();
             if (monthName !== currentMonth) return false;
             const today = now.getDate();
+            
+            // Check for exception dates
+            const year = now.getFullYear();
+            const exception = getExceptionDates(year, monthName, star);
+            if (exception) {
+                startDay = exception.start_day;
+                endDay = exception.end_day;
+            }
+            
             return today >= startDay && today <= endDay;
         }
         
@@ -596,9 +637,9 @@
                     const key = `${month}_${chal.star}`;
                     const isCompleted = userData.completedStars[month]?.includes(chal.star);
                     const completionDate = userData.completionDates[key] || '';
-                    const dates = calcStartEndDates(month, chal.start_day, chal.end_day);
+                    const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
                     
-                    const isActive = isChallengeActive(month, chal.start_day, chal.end_day);
+                    const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
                     const year = new Date().getFullYear();
                     html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
                         <td>
