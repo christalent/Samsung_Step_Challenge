@@ -497,9 +497,7 @@
             return null;
         }
         
-        function calcStartEndDates(monthName, startDay, endDay, star) {
-            const now = new Date();
-            const year = now.getFullYear();
+        function calcStartEndDates(monthName, startDay, endDay, star, year) {
             const monthIdx = getMonthIndex(monthName);
             const daysInMonth = getDaysInMonth(year, monthIdx);
             
@@ -658,7 +656,7 @@
                         const key = `${year}_${month}_${chal.star}`;
                         const completionDate = userData.completionDates[key] || '';
                         const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
-                        const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
+                        const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star, year);
                         const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
                         
                         html += `<tr class="${isCompleted ? 'completed' : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
