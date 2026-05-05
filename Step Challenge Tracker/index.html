@@ -82,6 +82,7 @@
         .stat-card .value.highlight { color: #58a6ff; }
         .stat-card .value.goal { color: #3fb950; }
         .stat-card .value.warning { color: #d29922; }
+        .stat-card .value.behind { color: #d29922; }
         
         /* Step Input Section */
         .step-input-section {
@@ -493,7 +494,9 @@
             document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
             document.getElementById('steps-to-next-star').textContent = stepsToNextStar.toLocaleString();
             
-            document.getElementById('needed-daily').textContent = neededDaily.toLocaleString();
+            const neededEl = document.getElementById('needed-daily');
+            neededEl.textContent = neededDaily.toLocaleString();
+            neededEl.className = 'value goal' + (neededDaily > avgDaily && avgDaily > 0 ? ' behind' : '');
         }
         
         function calcStepsToNextStar(currentSteps) {
