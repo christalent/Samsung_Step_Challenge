@@ -233,6 +233,10 @@
                 <div class="value" id="remaining">—</div>
             </div>
             <div class="stat-card">
+                <div class="label">Today's Target</div>
+                <div class="value" id="todays-target">—</div>
+            </div>
+            <div class="stat-card">
                 <div class="label">Avg Daily Steps</div>
                 <div class="value" id="avg-daily">—</div>
             </div>
@@ -471,9 +475,11 @@
             const remaining = Math.max(0, 200000 - currentSteps);
             const avgDaily = dayOfMonth > 0 ? Math.round(currentSteps / dayOfMonth) : 0;
             const neededDaily = daysLeft > 0 ? Math.round(remaining / daysLeft) : remaining;
+            const todaysTarget = Math.round((200000 / daysInMonth) * dayOfMonth);
             
             document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
             document.getElementById('remaining').textContent = remaining.toLocaleString();
+            document.getElementById('todays-target').textContent = todaysTarget.toLocaleString();
             document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
             
             const neededEl = document.getElementById('needed-daily');
