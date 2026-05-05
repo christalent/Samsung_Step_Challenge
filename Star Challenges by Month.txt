@@ -1,0 +1,95 @@
+JANUARY
+- Star 1: 20,000 — Days 2→4
+- Star 2: 35,000 — Days 5→7
+- Star 3: 70,000 — Days 11→13
+- Star 4: 100,000 — Days 16→18
+- Star 5: 150,000 — Days 23→25
+- Star 6: 200,000 — Day 30
+
+FEBRUARY
+- Star 1: 30,000 — Days 3→5
+- Star 2: 70,000 — Days 8→10
+- Star 3: 100,000 — Days 12→14
+- Star 4: 130,000 — Days 18→20
+- Star 5: 170,000 — Days 23→25
+- Star 6: 200,000 — Day 28/29
+
+MARCH
+- Star 1: 20,000 — Days 1→3
+- Star 2: 60,000 — Days 6→8
+- Star 3: 90,000 — Days 11→13
+- Star 4: 120,000 — Days 18→20
+- Star 5: 160,000 — Days 23→25
+- Star 6: 200,000 — Day 31
+
+APRIL
+- Star 1: 20,000 — Days 2→4
+- Star 2: 35,000 — Days 5→7
+- Star 3: 70,000 — Days 10→13
+- Star 4: 100,000 — Days 16→18
+- Star 5: 150,000 — Days 23→25
+- Star 6: 200,000 — Day 30
+
+MAY
+- Star 1: 30,000 — Days 3→5
+- Star 2: 70,000 — Days 8→10
+- Star 3: 100,000 — Days 12→14
+- Star 4: 130,000 — Days 17→20
+- Star 5: 170,000 — Days 23→25
+- Star 6: 200,000 — Day 31
+
+JUNE
+- Star 1: 20,000 — Days 2→4
+- Star 2: 35,000 — Days 5→7
+- Star 3: 70,000 — Days 10→13
+- Star 4: 100,000 — Days 16→18
+- Star 5: 150,000 — Days 23→25
+- Star 6: 200,000 — Day 30
+
+JULY
+- Star 1: 25,000 — Days 2→4
+- Star 2: 65,000 — Days 6→8
+- Star 3: 100,000 — Days 12→14
+- Star 4: 140,000 — Days 17→19
+- Star 5: 180,000 — Days 23→25
+- Star 6: 200,000 — Day 31
+
+AUGUST
+- Star 1: 20,000 — Days 2→4
+- Star 2: 35,000 — Days 5→7
+- Star 3: 70,000 — Days 12→14
+- Star 4: 100,000 — Days 16→18
+- Star 5: 150,000 — Days 23→25
+- Star 6: 200,000 — Day 31
+
+SEPTEMBER
+- Star 1: 30,000 — Days 3→5
+- Star 2: 70,000 — Days 8→10
+- Star 3: 100,000 — Days 12→14
+- Star 4: 130,000 — Days 18→20
+- Star 5: 170,000 — Days 23→25
+- Star 6: 200,000 — Day 30
+
+OCTOBER
+- Star 1: 20,000 — Days 1→3
+- Star 2: 60,000 — Days 6→8
+- Star 3: 90,000 — Days 11→13
+- Star 4: 120,000 — Days 18→20
+- Star 5: 160,000 — Days 23→25
+- Star 6: 200,000 — Day 31
+
+NOVEMBER
+- Star 1: 30,000 — Days 3→5
+- Star 2: 70,000 — Days 8→10
+- Star 3: 100,000 — Days 12→14
+- Star 4: 130,000 — Days 18→20
+- Star 5: 170,000 — Days 23→25
+- Star 6: 200,000 — Day 26-30
+
+DECEMBER
+- Star 1: 20,000 — Days 1→3
+- Star 2: 60,000 — Days 6→8
+- Star 3: 90,000 — Days 11→13
+- Star 4: 120,000 — Days 18→20
+- Star 5: 160,000 — Days 23→25
+- Star 6: 200,000 — Day 31
