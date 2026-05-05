@@ -307,9 +307,9 @@
         };
 
         // ========== OWN CLOUD WEBDAV CONFIG ==========
-        const OWNCLOUD_URL = 'https://freeshell.de/owncloud/remote.php/webdav/step-tracker-data.json';
-        const OWNCLOUD_USER = 'talent';
-        const OWNCLOUD_PASS = 'mast0d0n';
+        const API_URL = 'api.php'; // PHP backend on same host
+        
+        
         
         // ========== STATE ==========
         let userData = null;
@@ -347,9 +347,8 @@
         // ========== DATA LOAD/SAVE ==========
         async function loadUserData() {
             try {
-                const resp = await fetch(OWNCLOUD_URL, {
+                const resp = await fetch(API_URL, {
                     method: 'GET',
-                    headers: { 'Authorization': 'Basic ' + btoa(OWNCLOUD_USER + ':' + OWNCLOUD_PASS) }
                 });
                 
                 if (resp.ok) {
@@ -389,10 +388,9 @@
             saveTimeout = setTimeout(async () => {
                 showSync('Saving...');
                 try {
-                    const resp = await fetch(OWNCLOUD_URL, {
-                        method: 'PUT',
+                    const resp = await fetch(API_URL, {
+                        method: 'POST',
                         headers: {
-                            'Authorization': 'Basic ' + btoa(OWNCLOUD_USER + ':' + OWNCLOUD_PASS),
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(userData)
@@ -477,7 +475,22 @@
         
         function updateSteps() {
             const input = document.getElementById('steps-input');
-            const val = parseInt(input.value) || 0;
+            const val = parseInt(input.value);
+            
+            // Don't update if empty or not a number
+            if (isNaN(val) || input.value.trim() === '') {
+                input.value = '';
+                return;
+            }
+            
+            // Confirm if lowering step count
+            if (val < userData.currentSteps) {
+                if (!confirm(`Lower step count from ${userData.currentSteps.toLocaleString()} to ${val.toLocaleString()}?`)) {
+                    input.value = '';
+                    return;
+                }
+            }
+            
             userData.currentSteps = Math.max(0, val);
             saveUserData();
             updateStats();
