@@ -560,10 +560,11 @@
         
         function calcStepsToNextStar(currentSteps) {
             const currentMonth = getCurrentMonthName();
+            const currentYear = new Date().getFullYear();
             const monthObj = CHALLENGE_DATA.challenge_tiers.find(m => m.name === currentMonth);
             if (!monthObj) return 0;
             
-            const completed = userData.completedStars[currentMonth] || [];
+            const completed = userData.completedStars[currentYear]?.[currentMonth] || [];
             const now = new Date();
             const today = now.getDate();
             
@@ -634,8 +635,8 @@
                 const month = monthObj.name;
                 
                 for (const chal of monthObj.challenges) {
-                    const key = `${month}_${chal.star}`;
-                    const isCompleted = userData.completedStars[month]?.includes(chal.star);
+                    const key = `${year}_${month}_${chal.star}`;
+                    const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
                     const completionDate = userData.completionDates[key] || '';
                     const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star);
                     
@@ -645,7 +646,7 @@
                         <td>
                             <input type="checkbox" 
                                    ${isCompleted ? 'checked' : ''} 
-                                   onchange="toggleStar('${month}', ${chal.star}, this.checked)">
+                                   onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">
                         </td>
                         <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
                         <td>${month}</td>
@@ -654,7 +655,7 @@
                         <td>
                             <input type="date" 
                                    value="${completionDate}"
-                                   onchange="setCompletionDate('${month}', ${chal.star}, this.value)">
+                                   onchange="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)">
                         </td>
                         <td class="steps-required">${chal.steps.toLocaleString()}</td>
                     </tr>`;
@@ -698,19 +699,18 @@
         }
         
         // ========== INTERACTIONS ==========
-        function toggleStar(month, star, checked) {
-            if (!userData.completedStars[month]) {
-                userData.completedStars[month] = [];
-            }
+        function toggleStar(year, month, star, checked) {
+            if (!userData.completedStars[year]) userData.completedStars[year] = {};
+            if (!userData.completedStars[year][month]) userData.completedStars[year][month] = [];
             
             if (checked) {
-                if (!userData.completedStars[month].includes(star)) {
-                    userData.completedStars[month].push(star);
+                if (!userData.completedStars[year][month].includes(star)) {
+                    userData.completedStars[year][month].push(star);
                 }
-                const key = `${month}_${star}`;
+                const key = `${year}_${month}_${star}`;
                 if (!userData.completionDates[key]) {
                     userData.completionDates[key] = new Date().toISOString().split('T')[0];
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
@@ -720,9 +720,9 @@
                     });
                 }
             } else {
-                if (!confirm(`Uncheck Star ${star} for ${month}? (Date completed will be retained.)`)) {
+                if (!confirm(`Uncheck Star ${star} for ${month} ${year}? (Date completed will be retained.)`)) {
                     // Restore checkbox to checked state
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
@@ -732,12 +732,12 @@
                     });
                     return;
                 }
-                userData.completedStars[month] = userData.completedStars[month].filter(s => s !== star);
+                userData.completedStars[year][month] = userData.completedStars[year][month].filter(s => s !== star);
                 // Keep completionDates[key] - don't delete
             }
             
             // Update row styling
-            const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+            const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
             rows.forEach(row => {
                 const starText = row.querySelector('.star-num')?.textContent || '';
                 const starNum = parseInt(starText.replace('★', ''));
@@ -749,14 +749,15 @@
             saveUserData();
         }
         
-        function setCompletionDate(month, star, date) {
-            const key = `${month}_${star}`;
+        function setCompletionDate(year, month, star, date) {
+            const key = `${year}_${month}_${star}`;
             if (date) {
                 userData.completionDates[key] = date;
-                if (!userData.completedStars[month]?.includes(star)) {
-                    if (!userData.completedStars[month]) userData.completedStars[month] = [];
-                    userData.completedStars[month].push(star);
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"]`);
+                if (!userData.completedStars[year]?.[month]?.includes(star)) {
+                    if (!userData.completedStars[year]) userData.completedStars[year] = {};
+                    if (!userData.completedStars[year][month]) userData.completedStars[year][month] = [];
+                    userData.completedStars[year][month].push(star);
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
