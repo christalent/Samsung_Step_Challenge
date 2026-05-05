@@ -674,6 +674,7 @@
                             <td>
                                 <input type="date" 
                                        value="${completionDate}"
+                                       onblur="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)"
                                        onchange="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)">
                             </td>
                             <td class="steps-required">${chal.steps.toLocaleString()}</td>
