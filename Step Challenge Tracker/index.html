@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KICA8ZWxsaXBzZSBjeD0iMTYiIGN5PSI4IiByeD0iNCIgcnk9IjUiIGZpbGw9IiMzZmI5NTAiLz4KICA8ZWxsaXBzZSBjeD0iMTAiIGN5PSIxOCIgcng9IjIuNSIgcnk9IjMuNSIgZmlsbD0iIzNmYjk1MCIvPgogIDxlbGxpcHNlIGN4PSIxNiIgY3k9IjE5IiByeD0iMi41IiByeT0iMy41IiBmaWxsPSIjM2ZiOTUwIi8+CiAgPGVsbGlwc2UgY3g9IjIyIiBjeT0iMTgiIHJ4PSIyLjUiIHJ5PSIzLjUiIGZpbGw9IiMzZmI5NTAiLz4KICA8ZWxsaXBzZSBjeD0iMTMiIGN5PSIyNiIgcng9IjIiIHJ5PSIzIiBmaWxsPSIjM2ZiOTUwIi8+CiAgPGVsbGlwc2UgY3g9IjE5IiBjeT0iMjYiIHJ4PSIyIiByeT0iMyIgZmlsbD0iIzNmYjk1MCIvPgo8L3N2Zz4K" type="image/svg+xml">
     <title>Step Challenge Tracker</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,6 +49,9 @@
         
         .status-bar .connected { color: #238636; }
         .status-bar .offline { color: #f85149; }
+        .status-bar .star-active { color: #d29922; }
+        .status-bar .star-due { color: #f85149; font-weight: 600; }
+        .status-bar .star-completed { color: #238636; }
         
         /* Stats Cards */
         .stats-grid {
@@ -57,6 +59,12 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 30px;
+        }
+        
+        @media (max-width: 800px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         .stat-card {
@@ -80,9 +88,8 @@
         }
         
         .stat-card .value.highlight { color: #58a6ff; }
-        .stat-card .value.goal { color: #3fb950; }
         .stat-card .value.warning { color: #d29922; }
-        .stat-card .value.behind { color: #d29922; }
+        .stat-card .value.ontrack { color: #238636; }
         
         /* Step Input Section */
         .step-input-section {
@@ -108,12 +115,16 @@
             font-size: 1.2rem;
             padding: 10px 15px;
             width: 200px;
-            -moz-appearance: textfield;
         }
-        .step-input-row input[type="number"]::-webkit-outer-spin-button,
-        .step-input-row input[type="number"]::-webkit-inner-spin-button {
+        
+        /* Hide number input spinners - we only enter numbers, never increment */
+        .step-input-row input[type="number"]::-webkit-inner-spin-button,
+        .step-input-row input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+        .step-input-row input[type="number"] {
+            -moz-appearance: textfield;
         }
         
         .step-input-row button {
@@ -127,6 +138,14 @@
         }
         
         .step-input-row button:hover { background: #2ea043; }
+        
+        .step-input-row .export-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+        
+        .step-input-row .export-btn:hover { background: #30363d; }
         
         .last-updated {
             font-size: 0.8rem;
@@ -184,16 +203,103 @@
         tr:last-child td { border-bottom: none; }
         
         tr.completed { opacity: 0.5; }
-        tr.completed-late { opacity: 1; }
-        tr.completed-late input[type="checkbox"] { accent-color: #da3633; }
-        
-
         
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
             cursor: pointer;
             accent-color: #238636;
+        }
+        
+        .star-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .star-indicator {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        
+        .star-indicator.on-time { color: #238636; }
+        .star-indicator.late { color: #f85149; }
+        .star-indicator.incomplete { color: #484f58; }
+        
+        .month-header {
+            background: #21262d;
+        }
+        
+        .month-header td {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #58a6ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 15px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .month-spacer td {
+            padding: 8px;
+            background: #161b22;
+        }
+        
+        .subtotal-row {
+            background: #1c2128;
+            font-weight: 600;
+        }
+        
+        .subtotal-row td {
+            border-top: 2px solid #30363d;
+            border-bottom: none;
+            padding: 12px 15px 20px 15px;
+            color: #8b949e;
+        }
+        
+        .subtotal-row .month-total {
+            color: #c9d1d9;
+            font-size: 0.95rem;
+        }
+        
+        .subtotal-row .stars-earned {
+            color: #d29922;
+            letter-spacing: 2px;
+        }
+        
+        .subtotal-row .steps-total {
+            color: #58a6ff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .subtotal-row .steps-total:hover {
+            text-decoration: underline;
+        }
+        
+        .subtotal-row .steps-total:not(.editable) {
+            cursor: default;
+            color: #8b949e;
+        }
+        
+        .subtotal-row .steps-total input {
+            background: #0d1117;
+            border: 1px solid #58a6ff;
+            border-radius: 4px;
+            color: #58a6ff;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            width: 120px;
+            text-align: right;
+        }
+        
+        .subtotal-row .steps-total input::-webkit-inner-spin-button,
+        .subtotal-row .steps-total input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .subtotal-row .steps-total input {
+            -moz-appearance: textfield;
         }
         
         input[type="date"], input[type="number"] {
@@ -209,7 +315,6 @@
         input[type="number"] { width: 100px; }
         
         .star-num { font-weight: 600; color: #d29922; }
-        .star-num.star-active { color: #3fb950; text-shadow: 0 0 8px rgba(63, 185, 80, 0.5); }
         .steps-required { color: #8b949e; font-size: 0.8rem; }
         
         .loading, .error {
@@ -219,24 +324,127 @@
         }
         .error { color: #f85149; }
         
-        @media (max-width: 700px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        /* PIN Modal */
+        .pin-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
+        
+        .pin-modal-overlay.show {
+            display: flex;
+        }
+        
+        .pin-modal {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            max-width: 300px;
+        }
+        
+        .pin-modal h3 {
+            color: #58a6ff;
+            margin-bottom: 15px;
+        }
+        
+        .pin-modal p {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .pin-modal input[type="password"] {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            width: 120px;
+            letter-spacing: 5px;
+        }
+        
+        .pin-modal input[type="password"]:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+        
+        .pin-modal .pin-error {
+            color: #f85149;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .pin-modal .pin-btns {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .pin-modal button {
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .pin-modal .btn-cancel {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+        
+        .pin-modal .btn-submit {
+            background: #238636;
+            border: 1px solid #238636;
+            color: #fff;
+        }
+        
+        .auth-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        .auth-badge.readonly {
+            background: #f85149;
+            color: #fff;
+        }
+        
+        .auth-badge.editing {
+            background: #238636;
+            color: #fff;
+        }
+        
+        @media (max-width: 600px) {
             .stat-card .value { font-size: 1.4rem; }
             .step-input-row { flex-direction: column; align-items: stretch; }
             .step-input-row input[type="number"] { width: 100%; }
         }
     </style>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
     <div class="container">
-        <h1>⭐ Step Challenge Tracker</h1>
+        <h1>⭐ Step Challenge Tracker <span class="auth-badge readonly" id="authBadge">Read Only</span></h1>
         
         <div class="status-bar">
             <span id="status-text">Checking OwnCloud connection...</span>
             <span id="sync-status"></span>
+            <span id="star-status"></span>
         </div>
         
         <div class="stats-grid" id="stats">
@@ -246,36 +454,40 @@
             </div>
             <div class="stat-card">
                 <div class="label">Avg Daily Steps</div>
-                <div class="value highlight" id="avg-daily">—</div>
+                <div class="value" id="avg-daily">—</div>
             </div>
             <div class="stat-card">
                 <div class="label">Steps to Next Star</div>
-                <div class="value goal" id="steps-to-next-star">—</div>
+                <div class="value" id="steps-to-next-star">—</div>
             </div>
             <div class="stat-card">
                 <div class="label">Today's Target</div>
-                <div class="value goal" id="todays-target">—</div>
+                <div class="value" id="todays-target">—</div>
             </div>
             <div class="stat-card">
-                <div class="label">Daily Avg for 200K Goal</div>
-                <div class="value goal" id="needed-daily">—</div>
+                <div class="label">Daily Avg Needed for 200K</div>
+                <div class="value" id="needed-daily">—</div>
             </div>
             <div class="stat-card">
                 <div class="label">Remaining to 200K</div>
-                <div class="value goal" id="remaining">—</div>
+                <div class="value" id="remaining">—</div>
             </div>
         </div>
         
         <div class="step-input-section">
             <div class="step-input-row">
                 <input type="number" id="steps-input" placeholder="Enter current steps..." min="0">
-                <button onclick="updateSteps()">Update</button>
+                <button onclick="if(isAuthenticated)updateSteps();else showPinModal();">Update</button>
+                <button class="export-btn" onclick="exportData()">Export Data</button>
             </div>
             <div class="last-updated" id="last-updated"></div>
         </div>
         
         <h2>Star Challenges</h2>
         <div class="filter-row">
+            <select id="year-filter" onchange="changeYear()">
+                <option value="all">All Years</option>
+            </select>
             <select id="month-filter" onchange="filterTable()">
                 <option value="all">All Months</option>
                 <option value="JANUARY">January</option>
@@ -291,31 +503,19 @@
                 <option value="NOVEMBER">November</option>
                 <option value="DECEMBER">December</option>
             </select>
-            &nbsp;
-            <select id="year-filter" onchange="filterTable()">
-                <option value="all">All Years</option>
-                <option value="2026" selected>2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-            </select>
         </div>
         
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>✓</th>
+                        <th>★</th>
                         <th>Star</th>
+                        <th>Steps</th>
                         <th>Month</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Date Completed</th>
-                        <th>Steps</th>
                     </tr>
                 </thead>
                 <tbody id="challenge-body">
@@ -351,26 +551,152 @@
         
         // ========== STATE ==========
         let userData = null;
-        let exceptionsData = null;
         let saveTimeout = null;
+        let isAuthenticated = false;
+        
+        // ========== AUTH ==========
+        function checkAuth() {
+            const cookies = document.cookie.split(';');
+            const authCookie = cookies.find(c => c.trim().startsWith('step_tracker_auth='));
+            isAuthenticated = !!authCookie;
+            updateAuthBadge();
+            if (!isAuthenticated) {
+                setReadOnlyMode();
+            }
+        }
+        
+        function updateAuthBadge() {
+            const badge = document.getElementById('authBadge');
+            if (isAuthenticated) {
+                badge.textContent = 'Editing';
+                badge.className = 'auth-badge editing';
+            } else {
+                badge.textContent = 'Read Only';
+                badge.className = 'auth-badge readonly';
+            }
+        }
+        
+        function setReadOnlyMode() {
+            document.querySelectorAll('#steps-input, #year-filter, #month-filter').forEach(el => {
+                el.disabled = true;
+                el.style.opacity = '0.5';
+            });
+            document.querySelectorAll('#challenge-body input[type="checkbox"]').forEach(el => {
+                el.disabled = true;
+            });
+            document.querySelectorAll('.export-btn').forEach(el => {
+                el.disabled = true;
+                el.style.opacity = '0.5';
+            });
+        }
+        
+        function setEditingMode() {
+            document.querySelectorAll('#steps-input, #year-filter, #month-filter').forEach(el => {
+                el.disabled = false;
+                el.style.opacity = '1';
+            });
+            document.querySelectorAll('#challenge-body input[type="checkbox"]').forEach(el => {
+                el.disabled = false;
+            });
+            document.querySelectorAll('.export-btn').forEach(el => {
+                el.disabled = false;
+                el.style.opacity = '1';
+            });
+        }
+        
+        function showPinModal() {
+            document.getElementById('pinModal').classList.add('show');
+            document.getElementById('pinInput').value = '';
+            document.getElementById('pinError').style.display = 'none';
+            document.getElementById('pinInput').focus();
+        }
+        
+        function closePinModal() {
+            document.getElementById('pinModal').classList.remove('show');
+        }
+        
+        async function verifyPin() {
+            const pin = document.getElementById('pinInput').value;
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: pin })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    document.cookie = 'step_tracker_auth=' + result.token + '; path=/; max-age=' + (60*60*24*365);
+                    isAuthenticated = true;
+                    updateAuthBadge();
+                    setEditingMode();
+                    closePinModal();
+                } else {
+                    document.getElementById('pinError').style.display = 'block';
+                    document.getElementById('pinInput').value = '';
+                }
+            } catch (e) {
+                console.error('Auth error:', e);
+                document.getElementById('pinError').style.display = 'block';
+                document.getElementById('pinInput').value = '';
+            }
+        }
         
         // ========== INIT ==========
         async function init() {
             updateStatus('Connecting to OwnCloud...', '');
             await loadUserData();
-            await loadExceptions();
+            populateYearFilter();
+            checkAuth();
             renderTable();
             updateStats();
             updateLastUpdated();
             updateStatus('Connected to OwnCloud', 'connected');
-            
-            // Auto-select current month in filter
+            updateStarStatus();
+
+            // Default to current year and current month
             document.getElementById('month-filter').value = getCurrentMonthName();
             filterTable();
             
+            // Steps input - require auth
             document.getElementById('steps-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') updateSteps();
+                if (e.key === 'Enter') {
+                    if (!isAuthenticated) { showPinModal(); return; }
+                    updateSteps();
+                }
             });
+            
+            document.getElementById('steps-input').addEventListener('focus', function() {
+                if (!isAuthenticated) showPinModal();
+            });
+            
+            // Export button
+            document.querySelector('.export-btn').addEventListener('click', function(e) {
+                if (!isAuthenticated) { e.preventDefault(); showPinModal(); }
+            });
+        }
+        
+        function populateYearFilter() {
+            const select = document.getElementById('year-filter');
+            select.innerHTML = '<option value="all">All Years</option>';
+            
+            console.log('populateYearFilter: userData.completedStars =', userData.completedStars);
+            
+            if (userData.completedStars) {
+                const years = Object.keys(userData.completedStars).sort();
+                console.log('Years found:', years);
+                const currentYear = new Date().getFullYear().toString();
+                years.forEach(year => {
+                    const opt = document.createElement('option');
+                    opt.value = year;
+                    opt.textContent = year;
+                    if (year === currentYear) opt.selected = true;
+                    select.appendChild(opt);
+                });
+            }
+        }
+        
+        function getSelectedYear() {
+            return document.getElementById('year-filter').value;
         }
         
         // ========== STATUS ==========
@@ -383,20 +709,71 @@
         function showSync(msg) {
             document.getElementById('sync-status').textContent = msg;
         }
-        
-        // ========== DATA LOAD/SAVE ==========
-        async function loadExceptions() {
-            try {
-                const resp = await fetch(API_URL + '?type=exceptions');
-                if (resp.ok) {
-                    exceptionsData = await resp.json();
+
+        // ========== STAR STATUS ==========
+        function updateStarStatus() {
+            const el = document.getElementById('star-status');
+            const now = new Date();
+            const today = now.getDate();
+            const currentMonth = getCurrentMonthName();
+            const selectedYear = getSelectedYear();
+
+            if (selectedYear === 'all') {
+                el.textContent = '';
+                el.className = '';
+                return;
+            }
+
+            const monthObj = CHALLENGE_DATA.challenge_tiers.find(m => m.name === currentMonth);
+            if (!monthObj) {
+                el.textContent = '';
+                el.className = '';
+                return;
+            }
+
+            const yearData = userData.completedStars[selectedYear];
+            const completedThisMonth = yearData?.[currentMonth] || [];
+
+            // Find current active star (today is between start_day and end_day)
+            let activeStar = null;
+            for (const chal of monthObj.challenges) {
+                if (today >= chal.start_day && today <= chal.end_day) {
+                    activeStar = chal;
+                    break;
                 }
-            } catch (e) {
-                console.warn('Could not load exceptions:', e);
-                exceptionsData = { exceptions: {} };
+            }
+
+            if (!activeStar) {
+                el.textContent = '';
+                el.className = '';
+                return;
+            }
+
+            const starNum = activeStar.star;
+
+            // Check if completed
+            if (completedThisMonth.includes(starNum)) {
+                const completionDate = userData.completionDates?.[`${selectedYear}-${currentMonth}-${starNum}`];
+                const dateStr = completionDate ? new Date(completionDate).toLocaleDateString() : '';
+                el.textContent = `★ ${starNum} completed ${dateStr}`;
+                el.className = 'star-completed';
+                return;
+            }
+
+            // Not completed
+            if (today === activeStar.end_day) {
+                el.textContent = `★ ${starNum} due today!`;
+                el.className = 'star-due';
+            } else if (today === activeStar.start_day || today === activeStar.start_day + 1) {
+                el.textContent = `★ ${starNum} active`;
+                el.className = 'star-active';
+            } else {
+                el.textContent = '';
+                el.className = '';
             }
         }
-        
+
+        // ========== DATA LOAD/SAVE ==========
         async function loadUserData() {
             try {
                 const resp = await fetch(API_URL, {
@@ -429,6 +806,11 @@
             if (!userData.completionDates || typeof userData.completionDates !== 'object') {
                 userData.completionDates = {};
             }
+            
+            // Ensure monthlyTotals exists
+            if (!userData.monthlyTotals || typeof userData.monthlyTotals !== 'object') {
+                userData.monthlyTotals = {};
+            }
         }
         
         function getDefaultUserData() {
@@ -436,6 +818,7 @@
                 currentSteps: 0,
                 completedStars: {},
                 completionDates: {},
+                monthlyTotals: {},
                 lastUpdated: null
             };
         }
@@ -491,48 +874,26 @@
             return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         }
         
-        function getExceptionDates(year, monthName, star) {
-            if (!exceptionsData || !exceptionsData.exceptions) return null;
-            const key = `${year}-${monthName.toUpperCase().substring(0,3).toUpperCase()}`;
-            const monthKey = `${year}-${monthName.toUpperCase()}`;
-            if (exceptionsData.exceptions[monthKey] && exceptionsData.exceptions[monthKey][star]) {
-                return exceptionsData.exceptions[monthKey][star];
-            }
-            return null;
-        }
-        
-        function calcStartEndDates(monthName, startDay, endDay, star, year) {
+        function calcStartEndDates(monthName, startDay, endDay) {
+            const now = new Date();
+            const year = now.getFullYear();
             const monthIdx = getMonthIndex(monthName);
             const daysInMonth = getDaysInMonth(year, monthIdx);
-            
-            // Check for exception dates
-            const exception = getExceptionDates(year, monthName, star);
-            if (exception) {
-                startDay = exception.start_day;
-                endDay = exception.end_day;
-            }
-            
             return {
                 start: formatDate(year, monthIdx, Math.min(startDay, daysInMonth)),
                 end: formatDate(year, monthIdx, Math.min(endDay, daysInMonth))
             };
         }
         
-        function isChallengeActive(monthName, startDay, endDay, star) {
-            const now = new Date();
-            const currentMonth = getCurrentMonthName();
-            if (monthName !== currentMonth) return false;
-            const today = now.getDate();
-            
-            // Check for exception dates
-            const year = now.getFullYear();
-            const exception = getExceptionDates(year, monthName, star);
-            if (exception) {
-                startDay = exception.start_day;
-                endDay = exception.end_day;
-            }
-            
-            return today >= startDay && today <= endDay;
+        function calcStartEndDatesWithYear(monthName, startDay, endDay, year) {
+            const monthIdx = getMonthIndex(monthName);
+            // Fall back to current year if 'all' or invalid year
+            const effectiveYear = (year === 'all' || isNaN(parseInt(year))) ? new Date().getFullYear() : parseInt(year);
+            const daysInMonth = getDaysInMonth(effectiveYear, monthIdx);
+            return {
+                start: formatDate(effectiveYear, monthIdx, Math.min(startDay, daysInMonth)),
+                end: formatDate(effectiveYear, monthIdx, Math.min(endDay, daysInMonth))
+            };
         }
         
         // ========== UI UPDATES ==========
@@ -546,51 +907,89 @@
             const remaining = Math.max(0, 200000 - currentSteps);
             const avgDaily = dayOfMonth > 0 ? Math.round(currentSteps / dayOfMonth) : 0;
             const neededDaily = daysLeft > 0 ? Math.round(remaining / daysLeft) : remaining;
+            
+            // Today's Target: (200000 / daysInMonth) * dayOfMonth
             const todaysTarget = Math.round((200000 / daysInMonth) * dayOfMonth);
-            const stepsToNextStar = calcStepsToNextStar(currentSteps);
             
-            document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
-            document.getElementById('remaining').textContent = remaining.toLocaleString();
-            document.getElementById('todays-target').textContent = todaysTarget.toLocaleString();
-            document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
-            document.getElementById('steps-to-next-star').textContent = stepsToNextStar.toLocaleString();
-            
-            const neededEl = document.getElementById('needed-daily');
-            neededEl.textContent = neededDaily.toLocaleString();
-            neededEl.className = 'value goal' + (neededDaily > avgDaily && avgDaily > 0 ? ' behind' : '');
-        }
-        
-        function calcStepsToNextStar(currentSteps) {
+            // Steps to Next Star: find next incomplete star threshold and its end date
+            const selectedYear = getSelectedYear();
             const currentMonth = getCurrentMonthName();
-            const currentYear = new Date().getFullYear();
-            const monthObj = CHALLENGE_DATA.challenge_tiers.find(m => m.name === currentMonth);
-            if (!monthObj) return 0;
+            let stepsToNextStar = '—';
+            let nextStarEndDate = null;
+            let stepsNeededForNextStar = null;
             
-            const completed = userData.completedStars[currentYear]?.[currentMonth] || [];
-            const now = new Date();
-            const today = now.getDate();
-            
-            // Find active incomplete star (today within window)
-            for (const chal of monthObj.challenges) {
-                if (completed.includes(chal.star)) continue;
-                if (today >= chal.start_day && today <= chal.end_day) {
-                    return Math.max(0, chal.steps - currentSteps);
+            if (selectedYear !== 'all') {
+                // Find the challenge data for current month
+                const monthObj = CHALLENGE_DATA.challenge_tiers.find(m => m.name === currentMonth);
+                if (monthObj) {
+                    // Get completed stars for this year/month
+                    const yearData = userData.completedStars[selectedYear];
+                    const completedThisMonth = yearData?.[currentMonth] || [];
+                    
+                    // Find next incomplete star
+                    for (const chal of monthObj.challenges) {
+                        if (!completedThisMonth.includes(chal.star)) {
+                            stepsToNextStar = Math.max(0, chal.steps - currentSteps);
+                            stepsNeededForNextStar = chal.steps;
+                            // Use the SELECTED year for date calculation, not current year
+                            const dates = calcStartEndDatesWithYear(currentMonth, chal.start_day, chal.end_day, selectedYear);
+                            nextStarEndDate = new Date(dates.end);
+                            break;
+                        }
+                    }
                 }
             }
             
-            // No active star — find next upcoming incomplete star
-            const upcoming = monthObj.challenges
-                .filter(c => !completed.includes(c.star) && c.start_day > today)
-                .sort((a, b) => a.start_day - b.start_day);
+            document.getElementById('current-steps').textContent = currentSteps.toLocaleString();
+            document.getElementById('avg-daily').textContent = avgDaily.toLocaleString();
+            document.getElementById('steps-to-next-star').textContent = stepsToNextStar === '—' ? '—' : stepsToNextStar.toLocaleString();
             
-            if (upcoming.length > 0) {
-                return Math.max(0, upcoming[0].steps - currentSteps);
+            document.getElementById('todays-target').textContent = todaysTarget.toLocaleString();
+            document.getElementById('needed-daily').textContent = neededDaily.toLocaleString();
+            document.getElementById('remaining').textContent = remaining.toLocaleString();
+            
+            // Today's Target: green if <= currentSteps, blue if > currentSteps
+            const todaysTargetEl = document.getElementById('todays-target');
+            todaysTargetEl.className = 'value' + (todaysTarget <= currentSteps && currentSteps > 0 ? ' ontrack' : ' highlight');
+            
+            // Avg Daily Steps: same color as Current Steps (no conditional)
+            const avgDailyEl = document.getElementById('avg-daily');
+            avgDailyEl.className = 'value highlight';
+            
+            // Daily Avg Needed: green if <= avgDaily, orange if > avgDaily
+            const neededEl = document.getElementById('needed-daily');
+            neededEl.className = 'value' + (neededDaily <= avgDaily && avgDaily > 0 ? ' ontrack' : ' warning');
+            
+            // Steps to Next Star: green if on track, orange if off track
+            const stepsToNextStarEl = document.getElementById('steps-to-next-star');
+            if (stepsNeededForNextStar !== null && nextStarEndDate && avgDaily > 0) {
+                const now = new Date();
+                // Add 1 to include the end date as a full day for counting
+                const daysUntilDue = Math.ceil((nextStarEndDate - now) / (1000 * 60 * 60 * 24)) + 1;
+                
+                if (daysUntilDue <= 0) {
+                    // Past due - gray out, no projection possible
+                    stepsToNextStarEl.className = 'value';
+                } else {
+                    const projectedSteps = currentSteps + (avgDaily * daysUntilDue);
+                    stepsToNextStarEl.className = 'value' + (projectedSteps >= stepsNeededForNextStar ? ' ontrack' : ' warning');
+                }
+            } else {
+                stepsToNextStarEl.className = 'value';
             }
             
-            // All stars done — return 0
-            return 0;
+            // Remaining to 200K: green if on track, orange if off track
+            const remainingEl = document.getElementById('remaining');
+            if (avgDaily > 0) {
+                const projectedTotal = currentSteps + (avgDaily * daysLeft);
+                remainingEl.className = 'value' + (projectedTotal >= 200000 ? ' ontrack' : ' warning');
+            } else {
+                remainingEl.className = 'value';
+            }
+
+            updateStarStatus();
         }
-        
+
         function updateLastUpdated() {
             const el = document.getElementById('last-updated');
             if (userData.lastUpdated) {
@@ -626,124 +1025,259 @@
             input.value = '';
         }
         
+        function exportData() {
+            // Build CSV with headers
+            let csv = 'Year,Month,Star,Steps Required,Completed,Completion Date,Monthly Total\n';
+            
+            const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+            const monthIdx = { 'JANUARY':0,'FEBRUARY':1,'MARCH':2,'APRIL':3,'MAY':4,'JUNE':5,'JULY':6,'AUGUST':7,'SEPTEMBER':8,'OCTOBER':9,'NOVEMBER':10,'DECEMBER':11 };
+            
+            const years = Object.keys(userData.completedStars || {}).sort();
+            years.forEach(year => {
+                const yearData = userData.completedStars[year] || {};
+                const yearTotals = userData.monthlyTotals || {};
+                
+                months.forEach(month => {
+                    const stars = yearData[month] || [];
+                    const monthTotal = yearTotals[year + '_' + month] || '';
+                    
+                    // Get challenge data for this month
+                    const monthObj = CHALLENGE_DATA.challenge_tiers.find(t => t.name === month);
+                    if (monthObj) {
+                        monthObj.challenges.forEach(chal => {
+                            const completed = stars.includes(chal.star) ? 'Yes' : 'No';
+                            const key = year + '_' + month + '_' + chal.star;
+                            const compDate = userData.completionDates[key] || '';
+                            csv += year + ',' + month + ',' + chal.star + ',' + chal.steps + ',' + completed + ',' + compDate + ',' + monthTotal + '\n';
+                        });
+                    }
+                });
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'step-tracker-data.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
         // ========== TABLE RENDERING ==========
         function renderTable() {
             const tbody = document.getElementById('challenge-body');
             const now = new Date();
-            const currentYear = now.getFullYear();
+            const currentMonth = getCurrentMonthName();
+            const selectedYear = getSelectedYear();
             let html = '';
             
-            // Get all years that have data, sorted descending
-            const yearsWithData = Object.keys(userData.completedStars || {}).sort((a, b) => b - a);
+            // Get years to render
+            let yearsToRender = [];
+            if (selectedYear === 'all') {
+                yearsToRender = Object.keys(userData.completedStars || {}).sort();
+            } else {
+                yearsToRender = [selectedYear];
+            }
             
-            for (const monthObj of CHALLENGE_DATA.challenge_tiers) {
-                const month = monthObj.name;
-                
-                // Collect years that have ANY stars completed for this month (from completedStars)
-                const yearsWithMonthData = new Set();
-                for (const yr of yearsWithData) {
-                    if (userData.completedStars[yr]?.[month]?.length > 0) {
-                        yearsWithMonthData.add(yr);
+            for (const year of yearsToRender) {
+                for (const monthObj of CHALLENGE_DATA.challenge_tiers) {
+                    const month = monthObj.name;
+                    const yearData = userData.completedStars[year] || {};
+                    
+                    // Add spacer before each month (except the first)
+                    if (html.length > 0) {
+                        html += `<tr class="month-spacer" data-month="${month}" data-year="${year}"><td colspan="7"></td></tr>`;
                     }
-                }
-                yearsWithMonthData.add(String(currentYear));
-                
-                for (const chal of monthObj.challenges) {
-                    // For each year that has data for this month, render a row
-                    for (const year of yearsWithMonthData) {
-                        const key = `${year}_${month}_${chal.star}`;
-                        const completionDate = userData.completionDates[key] || '';
-                        const isCompleted = userData.completedStars[year]?.[month]?.includes(chal.star);
-                        const dates = calcStartEndDates(month, chal.start_day, chal.end_day, chal.star, year);
-                        const isActive = isChallengeActive(month, chal.start_day, chal.end_day, chal.star);
-                        const isLate = completionDate && completionDate > dates.end;
+                    
+                    // Add month header row
+                    html += `<tr class="month-header" data-month="${month}" data-year="${year}">
+                        <td colspan="7">${year} ${month}</td>
+                    </tr>`;
+                    
+                    for (const chal of monthObj.challenges) {
+                        // Build key for completionDates (supports both old and new format)
+                        const key = `${month}_${chal.star}`;
+                        const keyWithYear = `${year}_${month}_${chal.star}`;
                         
-                        const iconId = `icon-${year}-${month}-${chal.star}`;
-                        const iconSvg = isLate
-                            ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#da3633" stroke-width="3" stroke-linecap="round" style="cursor:pointer" onclick="toggleStar('${year}', '${month}', ${chal.star}, false)" title="Late completion"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>`
-                            : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#238636" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer" onclick="toggleStar('${year}', '${month}', ${chal.star}, false)" title="On time"><polyline points="4 12 9 17 20 6"/></svg>`;
+                        // Check completion for this specific year/month
+                        const isCompleted = yearData[month]?.includes(chal.star) || false;
                         
-                        html += `<tr class="${isCompleted ? (isLate ? 'completed-late' : 'completed') : ''}${isActive ? ' active-row' : ''}" data-month="${month}" data-year="${year}">
-                            <td style="text-align:center;">
-                                ${isCompleted ? iconSvg : `<input type="checkbox" onchange="toggleStar('${year}', '${month}', ${chal.star}, this.checked)">`}
+                        // Get completion date - check year-specific first, then old format
+                        const completionDate = userData.completionDates[keyWithYear] || 
+                                              userData.completionDates[key] || '';
+                        const dates = calcStartEndDatesWithYear(month, chal.start_day, chal.end_day, year);
+                        
+                        // Determine star status based on completion date vs end date
+                        let starIndicator = '';
+                        let starClass = '';
+                        if (completionDate) {
+                            const endDate = dates.end;
+                            if (completionDate > endDate) {
+                                starIndicator = '❌';
+                                starClass = 'late';
+                            } else {
+                                starIndicator = '✅';
+                                starClass = 'on-time';
+                            }
+                        } else {
+                            starIndicator = '○';
+                            starClass = 'incomplete';
+                        }
+                        
+                        html += `<tr class="${isCompleted ? 'completed' : ''}" data-month="${month}" data-year="${year}">
+                            <td class="star-cell">
+                                <input type="checkbox" 
+                                       ${isCompleted ? 'checked' : ''} 
+                                       onchange="toggleStar('${month}', ${chal.star}, this.checked)"
+                                       title="Toggle completion">
+                                <span class="star-indicator ${starClass}" title="${completionDate ? (completionDate > dates.end ? 'Completed late' : 'Completed on time') : 'Not completed'}">${starIndicator}</span>
                             </td>
-                            <td class="star-num${isActive ? ' star-active' : ''}">★${chal.star}</td>
+                            <td class="star-num">★${chal.star}</td>
+                            <td class="steps-required">${chal.steps.toLocaleString()}</td>
                             <td>${month}</td>
                             <td>${dates.start}</td>
                             <td>${dates.end}</td>
                             <td>
                                 <input type="date" 
                                        value="${completionDate}"
-                                       onblur="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)"
-                                       onchange="setCompletionDate('${year}', '${month}', ${chal.star}, this.value)">
+                                       onchange="setCompletionDate('${month}', ${chal.star}, this.value)">
                             </td>
-                            <td class="steps-required">${chal.steps.toLocaleString()}</td>
                         </tr>`;
                     }
+                    
+                    // Add subtotal row after each month
+                    const completedInMonth = yearData[month] || [];
+                    const totalStars = monthObj.challenges.length;
+                    const earnedStars = completedInMonth.length;
+                    const starsDisplay = '★'.repeat(earnedStars) + '☆'.repeat(totalStars - earnedStars);
+                    const monthTotal = userData.monthlyTotals?.[`${year}_${month}`] || null;
+                    const totalDisplay = monthTotal ? monthTotal.toLocaleString() + ' steps' : 'Click to add';
+                    
+                    html += `<tr class="subtotal-row" data-month="${month}" data-year="${year}">
+                        <td colspan="3" class="month-total">${year} ${month} Total</td>
+                        <td class="stars-earned" colspan="2">${starsDisplay}</td>
+                        <td colspan="2" class="steps-total editable" 
+                            onclick="editMonthlyTotal('${year}', '${month}', this)" 
+                            title="Click to edit monthly total">
+                            ${totalDisplay}
+                        </td>
+                    </tr>`;
                 }
             }
             
             tbody.innerHTML = html;
         }
         
+        function editMonthlyTotal(year, month, cell) {
+            if (year === 'all') {
+                alert('Please select a specific year first.');
+                return;
+            }
+            
+            if (!confirm(`Update monthly total for ${month} ${year}? This will overwrite the existing value.`)) {
+                return;
+            }
+            
+            const key = `${year}_${month}`;
+            const currentValue = userData.monthlyTotals?.[key] || '';
+            const monthNames = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+            const monthIdx = monthNames.indexOf(month);
+            const lastDay = new Date(year, monthIdx + 1, 0).getDate();
+            const lastDayDate = `${year}-${String(monthIdx + 1).padStart(2, '0')}-${lastDay}`;
+            
+            cell.innerHTML = `<input type="number" 
+                value="${currentValue}" 
+                placeholder="Steps..."
+                onblur="saveMonthlyTotal('${year}', '${month}', this.value, '${lastDayDate}')"
+                onkeypress="if(event.key==='Enter')this.blur()">
+                <span style="color:#8b949e;font-size:0.8rem;margin-left:5px;">${lastDayDate}</span>`;
+            cell.querySelector('input').focus();
+        }
+        
+        function saveMonthlyTotal(year, month, value, date) {
+            const key = `${year}_${month}`;
+            if (!userData.monthlyTotals) userData.monthlyTotals = {};
+            
+            if (value && value.trim() !== '') {
+                userData.monthlyTotals[key] = parseInt(value.replace(/,/g, ''));
+            } else {
+                delete userData.monthlyTotals[key];
+            }
+            
+            saveUserData();
+            renderTable();
+            filterTable();
+        }
+        
+        function changeYear() {
+            // Reset month filter to 'all' when year changes
+            document.getElementById('month-filter').value = 'all';
+            renderTable();
+            filterTable();
+        }
+        
         function filterTable() {
             const yearFilter = document.getElementById('year-filter').value;
             const monthFilter = document.getElementById('month-filter').value;
             const rows = document.querySelectorAll('#challenge-body tr');
+            console.log('filterTable: yearFilter=', yearFilter, 'monthFilter=', monthFilter, 'total rows=', rows.length);
             rows.forEach(row => {
-                const matchYear = yearFilter === 'all' || row.dataset.year === yearFilter;
-                const matchMonth = monthFilter === 'all' || row.dataset.month === monthFilter;
-                row.style.display = (matchYear && matchMonth) ? '' : 'none';
-            });
-            updateDateInputConstraints();
-        }
-        
-        function updateDateInputConstraints() {
-            const yearFilter = document.getElementById('year-filter').value;
-            const monthFilter = document.getElementById('month-filter').value;
-            const rows = document.querySelectorAll('#challenge-body tr');
-            rows.forEach(row => {
-                const dateInput = row.querySelector('input[type="date"]');
-                if (!dateInput) return;
-                if (yearFilter === 'all' || monthFilter === 'all') {
-                    dateInput.removeAttribute('min');
-                    dateInput.removeAttribute('max');
-                } else {
-                    const monthIdx = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'].indexOf(monthFilter) + 1;
-                    const daysInMonth = new Date(parseInt(yearFilter), monthIdx, 0).getDate();
-                    const minDate = `${yearFilter}-${String(monthIdx).padStart(2,'0')}-01`;
-                    const maxDate = `${yearFilter}-${String(monthIdx).padStart(2,'0')}-${String(daysInMonth).padStart(2,'0')}`;
-                    dateInput.min = minDate;
-                    dateInput.max = maxDate;
-                }
+                const rowYear = row.dataset.year || 'all';
+                const rowMonth = row.dataset.month || '';
+                const yearMatch = (yearFilter === 'all' || rowYear === yearFilter || yearFilter === 'all');
+                const monthMatch = (monthFilter === 'all' || rowMonth === monthFilter);
+                console.log('  row:', rowMonth, rowYear, 'yearMatch=', yearMatch, 'monthMatch=', monthMatch);
+                row.style.display = (yearMatch && monthMatch) ? '' : 'none';
             });
         }
         
         // ========== INTERACTIONS ==========
-        function toggleStar(year, month, star, checked) {
-            if (!userData.completedStars[year]) userData.completedStars[year] = {};
-            if (!userData.completedStars[year][month]) userData.completedStars[year][month] = [];
+        function toggleStar(month, star, checked) {
+            if (!isAuthenticated) {
+                showPinModal();
+                // Reset checkbox to previous state
+                renderTable();
+                filterTable();
+                return;
+            }
+            
+            const year = getSelectedYear();
+            if (year === 'all') {
+                alert('Please select a specific year first.');
+                return;
+            }
+            
+            // Ensure multi-year structure exists
+            if (!userData.completedStars[year]) {
+                userData.completedStars[year] = {};
+            }
+            if (!userData.completedStars[year][month]) {
+                userData.completedStars[year][month] = [];
+            }
             
             if (checked) {
                 if (!userData.completedStars[year][month].includes(star)) {
                     userData.completedStars[year][month].push(star);
                 }
-                const key = `${year}_${month}_${star}`;
-                if (!userData.completionDates[key]) {
-                    userData.completionDates[key] = new Date().toISOString().split('T')[0];
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
+                // Try new format first, then old
+                const keyWithYear = `${year}_${month}_${star}`;
+                const key = `${month}_${star}`;
+                if (!userData.completionDates[keyWithYear] && !userData.completionDates[key]) {
+                    userData.completionDates[keyWithYear] = new Date().toISOString().split('T')[0];
+                    // Update the date input
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"][data-year="${year}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
                         if (starNum === star) {
-                            row.querySelector('input[type="date"]').value = userData.completionDates[key];
+                            row.querySelector('input[type="date"]').value = userData.completionDates[keyWithYear];
                         }
                     });
                 }
             } else {
                 if (!confirm(`Uncheck Star ${star} for ${month} ${year}? (Date completed will be retained.)`)) {
                     // Restore checkbox to checked state
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"][data-year="${year}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
@@ -754,11 +1288,11 @@
                     return;
                 }
                 userData.completedStars[year][month] = userData.completedStars[year][month].filter(s => s !== star);
-                // Keep completionDates[key] - don't delete
+                // Keep completionDates - don't delete
             }
             
             // Update row styling
-            const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
+            const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"][data-year="${year}"]`);
             rows.forEach(row => {
                 const starText = row.querySelector('.star-num')?.textContent || '';
                 const starNum = parseInt(starText.replace('★', ''));
@@ -770,15 +1304,24 @@
             saveUserData();
         }
         
-        function setCompletionDate(year, month, star, date) {
-            const key = `${year}_${month}_${star}`;
+        function setCompletionDate(month, star, date) {
+            const year = getSelectedYear();
+            if (year === 'all') {
+                alert('Please select a specific year first.');
+                return;
+            }
+            
+            const keyWithYear = `${year}_${month}_${star}`;
+            const key = `${month}_${star}`;
+            
             if (date) {
-                userData.completionDates[key] = date;
+                // Save in new format
+                userData.completionDates[keyWithYear] = date;
                 if (!userData.completedStars[year]?.[month]?.includes(star)) {
                     if (!userData.completedStars[year]) userData.completedStars[year] = {};
                     if (!userData.completedStars[year][month]) userData.completedStars[year][month] = [];
                     userData.completedStars[year][month].push(star);
-                    const rows = document.querySelectorAll(`#challenge-body tr[data-year="${year}"][data-month="${month}"]`);
+                    const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"][data-year="${year}"]`);
                     rows.forEach(row => {
                         const starText = row.querySelector('.star-num')?.textContent || '';
                         const starNum = parseInt(starText.replace('★', ''));
@@ -789,11 +1332,7 @@
                     });
                 }
             } else {
-                delete userData.completionDates[key];
-                // Also remove from completedStars if date is cleared
-                if (userData.completedStars[year]?.[month]) {
-                    userData.completedStars[year][month] = userData.completedStars[year][month].filter(s => s !== star);
-                }
+                delete userData.completionDates[keyWithYear];
             }
             saveUserData();
         }
@@ -801,5 +1340,19 @@
         // ========== START ==========
         init();
     </script>
+    
+    <!-- PIN Modal -->
+    <div class="pin-modal-overlay" id="pinModal">
+        <div class="pin-modal">
+            <h3>🔒 Enter PIN to Edit</h3>
+            <p>Enter your PIN to enable editing mode</p>
+            <input type="password" id="pinInput" maxlength="10" placeholder="****">
+            <div class="pin-error" id="pinError">Incorrect PIN. Try again.</div>
+            <div class="pin-btns">
+                <button class="btn-cancel" onclick="closePinModal()">Cancel</button>
+                <button class="btn-submit" onclick="verifyPin()">Submit</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
