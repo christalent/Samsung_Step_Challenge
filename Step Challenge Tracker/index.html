@@ -1174,8 +1174,17 @@
                 return;
             }
             
-            if (!confirm(`Update monthly total for ${month} ${year}? This will overwrite the existing value.`)) {
-                return;
+            const key = `${year}_${month}`;
+            const existingValue = userData.monthlyTotals?.[key];
+            
+            if (existingValue !== undefined && existingValue !== null) {
+                if (!confirm(`Update monthly total for ${month} ${year}? This will overwrite ${existingValue.toLocaleString()} steps.`)) {
+                    return;
+                }
+            } else {
+                if (!confirm(`Add monthly total for ${month} ${year}?`)) {
+                    return;
+                }
             }
             
             const key = `${year}_${month}`;
