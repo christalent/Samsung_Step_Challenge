@@ -870,6 +870,13 @@
             return months[new Date().getMonth()];
         }
         
+        // Returns today's date as YYYY-MM-DD using local time (not UTC)
+        // Prevents timezone-shift bugs when toggling stars in the evening
+        function todayLocalISO() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+        
         function formatDate(year, month, day) {
             return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         }
@@ -1296,7 +1303,7 @@
                 const keyWithYear = `${year}_${month}_${star}`;
                 const key = `${month}_${star}`;
                 if (!userData.completionDates[keyWithYear] && !userData.completionDates[key]) {
-                    userData.completionDates[keyWithYear] = new Date().toISOString().split('T')[0];
+                    userData.completionDates[keyWithYear] = todayLocalISO();
                     // Update the date input
                     const rows = document.querySelectorAll(`#challenge-body tr[data-month="${month}"][data-year="${year}"]`);
                     rows.forEach(row => {
