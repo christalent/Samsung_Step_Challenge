@@ -1146,10 +1146,35 @@
                     }
                     
                     // Add subtotal row after each month
-                    const completedInMonth = yearData[month] || [];
                     const totalStars = monthObj.challenges.length;
-                    const earnedStars = completedInMonth.length;
-                    const starsDisplay = '★'.repeat(earnedStars) + '☆'.repeat(totalStars - earnedStars);
+                    
+                    // Count on-time vs late stars separately
+                    let onTimeStars = 0;
+                    let lateStars = 0;
+                    let starIcons = '';
+                    
+                    for (const chal of monthObj.challenges) {
+                        const keyWithYear = `${year}_${month}_${chal.star}`;
+                        const completionDate = userData.completionDates[keyWithYear] || 
+                                              userData.completionDates[`${month}_${chal.star}`] || '';
+                        const dates = calcStartEndDatesWithYear(month, chal.start_day, chal.end_day, year);
+                        const isCompleted = yearData[month]?.includes(chal.star) || false;
+                        
+                        if (isCompleted) {
+                            if (completionDate && completionDate > dates.end) {
+                                lateStars++;
+                                starIcons += '❌';
+                            } else {
+                                onTimeStars++;
+                                starIcons += '★';
+                            }
+                        } else {
+                            starIcons += '☆';
+                        }
+                    }
+                    
+                    const earnedStars = onTimeStars; // only count on-time for the display
+                    const starsDisplay = starIcons;
                     const monthTotal = userData.monthlyTotals?.[`${year}_${month}`] || null;
                     const totalDisplay = monthTotal ? monthTotal.toLocaleString() + ' steps' : 'Click to add';
                     
