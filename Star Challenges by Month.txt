@@ -41,7 +41,7 @@ MAY
 JUNE
 - Star 1: 20,000 — Days 2→4
 - Star 2: 35,000 — Days 5→7
-- Star 3: 70,000 — Days 10→13
+- Star 3: 70,000 — Days 11→13
 - Star 4: 100,000 — Days 16→18
 - Star 5: 150,000 — Days 23→25
 - Star 6: 200,000 — Day 30
