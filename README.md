@@ -1,4 +1,6 @@
-# Samsung Step Challenge
+# step-tracker
+
+*Note:* Renamed from `Samsung_Step_Challenge` to [`step-tracker`](https://github.com/christalent/step-tracker) on 2026-06-11. The repo is the journal analysis + Python scripts; the **live webapp source** is the working copy at `~/repos/step_tracker/` (no git), and the live data is at `https://freeshell.de/~talent/step-tracker/`.
 
 ## Live App
 
@@ -16,7 +18,7 @@ Tracks Samsung Health step challenge progress across multiple years:
 ## Repo structure
 
 ```
-Samsung_Step_Challenge/
+step-tracker/
 ├── Step Challenge Tracker/
 │   ├── index.html        ← source for the live app
 │   └── api.php           ← backend
